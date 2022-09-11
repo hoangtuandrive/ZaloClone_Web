@@ -1,27 +1,20 @@
 import React from 'react';
-import ChatList from '../../components/chatList/ChatList';
-import Slider from '../../components/slider';
-import './chat.scss';
-import {  Col, Row } from 'antd';
+import ConversationList from '../../components/ConversationList';
 import ChatContent from '../../components/chatContent/ChatContent';
-function chat() {
-    return ( 
-        <div className='wrapper_chat'>
-            <Row gutter={[0, 8]}>
-                <Col span={1}>                                          
-                   <Slider />
-               </Col>
-               <Col span={5}>
+// import MessageList from '../MessageList';
+import './Messenger.css';
 
-                  <ChatList />                                                          
-               </Col>
-               <Col span={18}>
+export default function Messenger(props) {
+    return (
+      <div className="messenger">
 
-                  <ChatContent />                                                          
-               </Col>
-            </Row>
+        <div className="scrollable sidebar">
+          <ConversationList />
         </div>
-     );
-}
 
-export default chat;
+        <div className="scrollable content">
+        <ChatContent />
+        </div>
+      </div>
+    );
+}
