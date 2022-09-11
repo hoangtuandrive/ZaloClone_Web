@@ -4,6 +4,7 @@ import ChatListItems from './ChatListItems';
 import classNames from 'classnames/bind';
 import styles from './chatList.module.scss';
 const cx = classNames.bind(styles);
+
 class ChatList extends Component {
     allChatUsers = [
         {
