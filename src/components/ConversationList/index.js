@@ -16,7 +16,7 @@ export default function ConversationList(props) {
         "https://demobucket-809328739865.s3.ap-southeast-1.amazonaws.com/takagi.jpg",
       id: 1,
       name: "Thuan",
-      text: "Hello World",
+      text: "Hello WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello World",
       active: true,
       isOnline: true,
     },
