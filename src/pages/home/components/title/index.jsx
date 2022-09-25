@@ -2,7 +2,7 @@ import React from "react";
 function Title() {
     return (
         <div className="TitleName">
-             <h3>MESSOLA</h3>  
+             <h3>MESSENGER</h3>  
                {/* <div className="Ten">
                          <span>M</span>
                          <span>E</span>
