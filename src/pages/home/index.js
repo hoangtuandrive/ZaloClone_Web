@@ -4,12 +4,14 @@ import About from './components/about';
 import Header from './components/header';
 import Footers from './components/footer';
 import './home.scss';
+import Title from './components/title';
 function Home() {
     return ( 
        <div className='homepage' >
-            <Header />;
-            <About />;
-          <Footers />;
+            <Header />
+            <Title />
+            <About />
+            <Footers />
        </div>
      );
 }

@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 
 function NavBar() {
     return (  
-        <header>         
+              
             <nav className="navbar">
                 <a href="#">Trang chủ</a>
                 <a href="#">Tính năng</a>
@@ -12,8 +12,7 @@ function NavBar() {
                 <Link to='./resign'>Đăng ký</Link>
                 <Link to='./login'>Đăng nhập</Link>
             </nav>
-        </header>
+      
     );
 }
-
-    export default NavBar
+export default NavBar;
