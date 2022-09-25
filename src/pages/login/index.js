@@ -15,7 +15,7 @@ function Login() {
 
             <div className="account_right">
                 <Title level={2} style={{ textAlign: 'center' }}>
-                    <Text style={{ color: '#4d93ff' }}>Đăng Nhập</Text>
+                    <Text style={{ color: '#4d93ff' }}>Đăng nhập</Text>
                 </Title>
                 <Divider />
                 <div className="form-account">
@@ -26,43 +26,32 @@ function Login() {
                                     
                                     <Row gutter={[0, 8]}>
                                         <Col span={18}>
-                                            <FastField
-                                                name="username"
-                                                
-                                                type="text"
-                                                title="Tài khoản"
-                                                placeholder="Nhập tài khoản"
-                                                maxLength={50}
-                                                titleCol={24}
-                                                inputCol={18}
-                                               
-                                            />
+                                            <div className='box'>
+                                                <input type="text" placeholder="Email"></input>
+                                            </div>
                                         </Col>
                                        
                                         <Col span={18}>
-                                            <FastField
-                                                name="password"
-                                               
-                                                type="password"
-                                                title="Mật khẩu"
-                                                placeholder="Nhập mật khẩu"
-                                                maxLength={200}
-                                                titleCol={24}
-                                                inputCol={18}
-                                                
-                                            />
+                                            <input type="password" id="password" placeholder="Mật khẩu"></input>
                                         </Col>                                  
 
                                         <Col span={18}>
                                             <br />
                                             <Button
+                                                className='btnLogin'
                                                 type="primary"
                                                 htmlType="submit"
                                                 block
-                                            >
-                                                Đăng nhập
+                                            >Đăng nhập                                                
                                             </Button>
                                         </Col>
+                                        <Col span={18}>
+                                        <div className="addtional-link">
+                                            <Link to="/">Quên mật khẩu?</Link> 
+                                            <Link to="/resign">Tạo tài khoản mới</Link>
+                                        </div>
+                                        </Col>
+
                                     </Row>
                                 </Form>
                             );
@@ -70,13 +59,21 @@ function Login() {
                     </Formik>
                 </div>
                 <Divider />
-                <div className="addtional-link">
-                    <Link to="/">Trang chủ</Link>
-                 
-                    <Link to="/account/registry">
-                        Bạn chưa có tài khoản ?
-                    </Link>
-                </div>
+                <Col span={18}>
+                    <Button
+                        className='btnLoginFacebook'
+                        htmlType="submit"
+                        block> Tiếp tục với Facebook
+                    </Button>
+                    
+                </Col> <br/>
+                <Col span={18}>
+                    <Button
+                        className='btnLoginGoogle'
+                        htmlType="submit"
+                        block> Tiếp tục với Google
+                    </Button>
+                </Col>
             </div>
         </div>
     </div>
