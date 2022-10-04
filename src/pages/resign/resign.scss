@@ -1,5 +1,5 @@
 
-.account-common-page {
+.account-common-page-resign{
     margin: auto;
     margin: auto;
     display: flex;
@@ -10,7 +10,7 @@
     background-size: cover;
     background-repeat: no-repeat;
 }
-    .account-wrapper {
+    .account-wrapper-resign {
         display: flex;
         flex-direction: row;
         width: 60%;
@@ -18,7 +18,7 @@
         margin: auto;
         box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
     }
-    .account_left {
+    .account_left-resign {
         width: 55%;
         background: rgba(146, 139, 139, 0.723);
         display: flex;
@@ -29,26 +29,16 @@
             max-height: 100%;
         }
     }
-    .account_right {
+    .account_right-resign {
         background: #fff;
         padding-top: 1rem;
-        width: 45%; 
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        
-       
+        width: 45%;
     }
-    .form-account{
+    .form-account-resign{
         width: 100%;
-        margin-left: 70px;
+        margin-left: 55px;
     }
-    .form-account .box{
-        position: relative;
-        width: 100%;
-        margin-bottom: 10px;
-    }
-    .form-account .btnLogin{
+    .form-account .btnRegister{
         width: 300px;
         height: 35px;
         border-radius: 10px;
@@ -65,7 +55,7 @@
         transition: linear 0.2s;
     }
     
-    .addtional-link {
+    .addtional-link-resign {
         margin-top: 5px;
         text-align: center;
         display: flex;
