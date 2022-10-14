@@ -1,39 +1,58 @@
 
-import {Image} from'antd';
-import React from 'react';
-import { Link,useNavigate } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
+import { Link,useLocation,useNavigate } from 'react-router-dom';
 import { Button, Col, Row,Typography } from 'antd';
 
 import IMAGE_ACCOUNT_PAGE from '../../assets/images/accountbg.png';
 import './resign.scss';
 
-import { Controller,useForm} from "react-hook-form";
+import { useForm} from "react-hook-form";
 import CustomInput from '../../components/Custom/CustomInput';
 import { Amplify, Auth } from 'aws-amplify';
 import awsconfig from '../../aws-exports';
+
+import {AppContext} from '../../context/AppProvider';
+
 Amplify.configure(awsconfig);
 const { Text, Title } = Typography;
 
 function Resign() {
+
+    
+    
     const EMAIL_REGEX =
     /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
  
     const navigate = useNavigate();
+    
     const {
         control,
-        handleSubmit,  watch 
+        handleSubmit,  watch ,value,
       } = useForm();
 
       const pwd = watch("password");
+      
+
+      const userContextT=watch("username");
+      const {setuserContext}=useContext(AppContext);
+
+         //Lấy uerName
+        //const userNameContext= {userContext} = useContext(AppContext);
+        
        const onSignUpPressed= async (data)=> {
+      
         const { username, password, email, name } = data;
+
     try {
         const user = await Auth.signUp({
             username,
             password,
             attributes: { email, name, preferred_username: username },
         });
+        setuserContext(userContextT);
         navigate('/authResign',{replace: true});
+      
+        
         console.log('Thanh cong');
         
         } catch (error) {      
@@ -81,6 +100,7 @@ function Resign() {
                                                 name="username"
                                                 control={control}
                                                 placeholder="Username"
+                                                
                                                 rules={{
                                                     required: "Username is required",
                                                     minLength: {
@@ -91,14 +111,16 @@ function Resign() {
                                                     value: 40,
                                                     message: "Username should be max 24 characters long",
                                                     },
+                                                    
                                                 }}
                                                 />
-                                            
+                                       
                                         </Col>
                                        
                                         <Col span={18}>
                                         <CustomInput
                                                 name="password"
+                                                type="password"
                                                 control={control}
                                                 placeholder="Password"
                                                 secureTextEntry
@@ -115,6 +137,7 @@ function Resign() {
                                         <Col span={18}>
                                         <CustomInput
                                                         name="password-repeat"
+                                                        type="password"
                                                         control={control}
                                                         placeholder="Repeat Password"
                                                         secureTextEntry
@@ -135,6 +158,7 @@ function Resign() {
                                             >
                                                 Đăng kí
                                             </Button>
+                                           
                                         </Col>
                                         <Col span={18}>
                                         <div className="addtional-link-resign">

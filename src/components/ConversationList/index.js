@@ -5,15 +5,22 @@ import Toolbar from '../Toolbar';
 import ToolbarButton from '../ToolbarButton';
 
 
+import {AppContext} from '../../context/AppProvider';
+import {LoginOutlined } from '@ant-design/icons';
+import { Button } from "antd";
+
 import './ConversationList.css';
 
 export default function ConversationList(props) {
   // const [conversations, setConversations] = useState();
-  
+  const {setIsModalOpen} =  React.useContext(AppContext);
+  const handleInfouser = () =>{
+    setIsModalOpen(true);
+  }
   const conversations = [
     {
       image:
-        "https://demobucket-809328739865.s3.ap-southeast-1.amazonaws.com/takagi.jpg",
+        "http://windows79.com/wp-content/uploads/2021/02/Thay-the-hinh-dai-dien-tai-khoan-nguoi-dung-mac.png",
       id: 1,
       name: "Thuan",
       text: "Hello WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello World",
@@ -22,7 +29,7 @@ export default function ConversationList(props) {
     },
     {
       image:
-        "https://demobucket-809328739865.s3.ap-southeast-1.amazonaws.com/takagi.jpg",
+        "http://windows79.com/wp-content/uploads/2021/02/Thay-the-hinh-dai-dien-tai-khoan-nguoi-dung-mac.png",
       id: 2,
       name: "Lo",
       text: "Hello World",
@@ -31,7 +38,7 @@ export default function ConversationList(props) {
     },
     {
       image:
-        "https://demobucket-809328739865.s3.ap-southeast-1.amazonaws.com/takagi.jpg",
+        "http://windows79.com/wp-content/uploads/2021/02/Thay-the-hinh-dai-dien-tai-khoan-nguoi-dung-mac.png",
       id: 3,
       name: "Joran",
       text: "Hello World",
@@ -40,7 +47,7 @@ export default function ConversationList(props) {
     },
     {
       image:
-        "https://demobucket-809328739865.s3.ap-southeast-1.amazonaws.com/takagi.jpg",
+        "http://windows79.com/wp-content/uploads/2021/02/Thay-the-hinh-dai-dien-tai-khoan-nguoi-dung-mac.png",
       id: 4,
       name: "Joren",
       text: "Hello World",
@@ -49,7 +56,7 @@ export default function ConversationList(props) {
     },
     {
       image:
-        "https://demobucket-809328739865.s3.ap-southeast-1.amazonaws.com/takagi.jpg",
+        "http://windows79.com/wp-content/uploads/2021/02/Thay-the-hinh-dai-dien-tai-khoan-nguoi-dung-mac.png",
       id: 5,
       name: "Outa",
       text: "Hello World",
@@ -58,7 +65,7 @@ export default function ConversationList(props) {
     },
     {
       image:
-        "https://demobucket-809328739865.s3.ap-southeast-1.amazonaws.com/takagi.jpg",
+        "http://windows79.com/wp-content/uploads/2021/02/Thay-the-hinh-dai-dien-tai-khoan-nguoi-dung-mac.png",
       id: 6,
       name: "Gole",
       text: "Hello World",
@@ -67,7 +74,7 @@ export default function ConversationList(props) {
     },
     {
       image:
-        "https://demobucket-809328739865.s3.ap-southeast-1.amazonaws.com/takagi.jpg",
+        "http://windows79.com/wp-content/uploads/2021/02/Thay-the-hinh-dai-dien-tai-khoan-nguoi-dung-mac.png",
       id: 7,
       name: "Akzac",
       text: "Hello World",
@@ -76,7 +83,7 @@ export default function ConversationList(props) {
     },
     {
       image:
-        "https://demobucket-809328739865.s3.ap-southeast-1.amazonaws.com/takagi.jpg",
+        "http://windows79.com/wp-content/uploads/2021/02/Thay-the-hinh-dai-dien-tai-khoan-nguoi-dung-mac.png",
       id: 8,
       name: "Anna",
       text: "Hello World",
@@ -85,7 +92,7 @@ export default function ConversationList(props) {
     },
     {
       image:
-        "https://demobucket-809328739865.s3.ap-southeast-1.amazonaws.com/takagi.jpg",
+        "http://windows79.com/wp-content/uploads/2021/02/Thay-the-hinh-dai-dien-tai-khoan-nguoi-dung-mac.png",
       id: 9,
       name: "Dra",
       text: "Hello World",
@@ -94,7 +101,7 @@ export default function ConversationList(props) {
     },
     {
       image:
-        "https://demobucket-809328739865.s3.ap-southeast-1.amazonaws.com/takagi.jpg",
+        "http://windows79.com/wp-content/uploads/2021/02/Thay-the-hinh-dai-dien-tai-khoan-nguoi-dung-mac.png",
       id: 10,
       name: "Minh",
       text: "Hello World",
@@ -108,7 +115,8 @@ export default function ConversationList(props) {
         <Toolbar
           title="Messenger"
           leftItems={[
-            <ToolbarButton key="cog" icon="ion-ios-cog" />
+            // <ToolbarButton key="cog" icon="ion-ios-cog" onClick={handleInfouser} />
+            <Button key="cog" onClick={handleInfouser}>Đăng Nhập<LoginOutlined /> </Button>
           ]}
           rightItems={[
             <ToolbarButton key="add" icon="ion-ios-add-circle-outline" />

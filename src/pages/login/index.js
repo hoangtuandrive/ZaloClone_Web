@@ -13,6 +13,7 @@ Amplify.configure(awsconfig);
 const { Text, Title } = Typography;
 function Login() {
     const navigate = useNavigate();
+    
     const {
         control,
         handleSubmit,  
@@ -23,7 +24,8 @@ function Login() {
         navigate('/chat',{replace: true});
         console.log('Thanh cong');
         
-        } catch (error) {      
+        } catch (error) {   
+            alert(error);   
         console.log('error signing in', error);  
     }
 }
@@ -42,6 +44,7 @@ function Login() {
                                         <Col span={18}>                                          
                                             <CustomInput
                                                 type="text" name="username" 
+                                                
                                                 placeholder="UserName"
                                                  control={control} 
                                                 rules={{ required: "Email is required" }}
@@ -49,13 +52,16 @@ function Login() {
                                                 maxLength={50}
                                                 titleCol={24}
                                                 inputCol={18}
-                                               
+                                             
                                             />                                     
                                         </Col>                                      
                                         <Col span={18}>
                                           
                                             <CustomInput
-                                               type="password" name="password"                                    
+                                            
+                                               type="password"
+                                                name="password" 
+                                                                           
                                                 control={control}
                                                 placeholder="Nhập mật khẩu"
                                                 rules={{

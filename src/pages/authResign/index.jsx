@@ -4,28 +4,37 @@ import './index.scss';
 import { Button } from 'antd';
 import IMAGE_ACCOUNT_PAGE from '../../assets/images/accountbg.png';
 
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import CustomInput from '../../components/Custom/CustomInput';
 import { Controller,useForm} from "react-hook-form";
 
 import { Amplify, Auth } from 'aws-amplify';
 import awsconfig from '../../aws-exports';
 
+import {AppContext} from '../../context/AppProvider';
+
 Amplify.configure(awsconfig);
 
 function AuthResign()  {
    // const route = useRoute();
-    const navigate = useNavigate();
-    const { control, handleSubmit, watch } = useForm();
+   //Lấy UserName từ Context;
+   const {userContext}=React.useContext(AppContext);
 
-   // const username = watch("username");
+
+    const navigate = useNavigate();
+    const { control, handleSubmit, watch } = useForm({ 
+        defaultValues: {username:userContext},
+    });
+
 
     const onConfirmPressed = async (data) => {
         try {
           await Auth.confirmSignUp(data.username, data.code);
           navigate('/login',{replace: true});
+         
             console.log('Thanh cong');
         } catch (error) {
+           
             console.log('error confirming sign up', error);
         }
       };
@@ -45,6 +54,7 @@ function AuthResign()  {
                         <div className="Auth_Input">
                         <CustomInput
                                 name="username"
+                               
                                 control={control}
                                 placeholder="Username"
                                 rules={{
@@ -54,6 +64,7 @@ function AuthResign()  {
                                 />
                              <CustomInput
                              name="code"
+                          
                              control={control}
                              placeholder="Enter your confirmation code"
                              rules={{
@@ -61,8 +72,9 @@ function AuthResign()  {
                              }}
                              className="NhapCode"
                               />
+                          
                         <Button   className="Btn"  onClick={handleSubmit(onConfirmPressed)} >Hoàn Thành</Button>
-
+                            {console.log(userContext)}
                         </div>
                 
                 </div>

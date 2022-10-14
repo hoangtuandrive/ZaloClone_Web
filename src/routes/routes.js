@@ -10,6 +10,7 @@ const publicRoutes = [
     { path: '/login', component: Login },
     { path: '/resign', component: Resign },
     { path: '/authResign', component: AuthResign },
+   
 
 ];
 

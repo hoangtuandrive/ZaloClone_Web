@@ -6,9 +6,9 @@ function NavBar() {
               
             <nav className="navbar">
                 <a href="#">Trang chủ</a>
-                <a href="#">Tính năng</a>
-                <a href="#">Ứng dụng</a>
-                <a href="./chat">Team phát triển</a>
+                <Link to="/">Tính năng</Link>
+                <Link to ="./authResign">Ứng dụng</Link>
+                <Link to ="./chat">Team phát triển</Link>
                 <Link to='./resign'>Đăng ký</Link>
                 <Link to='./login'>Đăng nhập</Link>
             </nav>
