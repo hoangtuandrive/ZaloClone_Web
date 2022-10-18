@@ -1,12 +1,20 @@
+
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { publicRoutes } from '././routes';
+import AddFriendModal from './components/Modals/AddFrienModal';
+import InfoUserModal from './components/Modals/InfoUserModal';
+import AppProvider from './context/AppProvider';
+
 
 function App() {
   return (
     <Router>
       <div className="App">
+       
+      <AppProvider>
         <Routes>
+          
           {publicRoutes.map((route,index) => {
             const Page=route.component;
               return(
@@ -14,13 +22,16 @@ function App() {
                   key={index}
                   path={route.path}
                   element={                  
-                        <Page />
+                        <Page />                  
                 }
-                  />
-              );
+                  />          
+              );                      
           }
-          )}
-        </Routes>       
+          )}          
+        </Routes>  
+        <InfoUserModal/> 
+        <AddFriendModal />
+        </AppProvider>           
       </div>
     </Router>
   );

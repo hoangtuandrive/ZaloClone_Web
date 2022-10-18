@@ -14,6 +14,7 @@
         display: flex;
         flex-direction: row;
         width: 60%;
+        height: 70%;
         margin: auto;
         box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
     }
@@ -31,21 +32,60 @@
     .account_right {
         background: #fff;
         padding-top: 1rem;
-        width: 45%;
-        .form-account {
-            padding: 0 3rem;
-        }
+        width: 45%; 
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        
+       
     }
-
+    .form-account{
+        width: 100%;
+        margin-left: 70px;
+    }
+    .form-account .box{
+        position: relative;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .form-account .btnLogin{
+        width: 300px;
+        height: 35px;
+        border-radius: 10px;
+    }
+    input{
+        position: relative;
+        width: 300px;
+        height: 35px;
+        text-indent: 10px;
+        border: 2px solid rgba(0,0,0,0.2);
+        border-radius: 10px;
+        outline: none;
+        font-size: 1.1em;
+        transition: linear 0.2s;
+    }
+    
     .addtional-link {
+        margin-top: 5px;
         text-align: center;
-        margin-top: 15%;
         display: flex;
         flex-direction: column;
         text-align: center;
-        a {
-            margin: 0.5rem 0;
+        a{  color: rgb(138, 138, 138);
+            margin-top: 5px;
         }
+    }
+    .btnLoginFacebook{
+        margin-left: 55px;
+        width: 300px;
+        height: 35px;
+        border-radius: 10px;
+    }
+    .btnLoginGoogle{
+        margin-left: 55px;
+        width: 300px;
+        height: 35px;
+        border-radius: 10px;
     }
     
 
