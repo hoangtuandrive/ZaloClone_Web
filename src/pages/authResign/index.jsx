@@ -41,7 +41,7 @@ function AuthResign()  {
     
 
     return (   
-        <div className="container">        
+        <div className="container-authResign">        
           
             <div className="content">
                     
