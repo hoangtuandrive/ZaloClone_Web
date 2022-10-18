@@ -4,6 +4,7 @@ import Toolbar from "../Toolbar";
 import ToolbarButton from "../ToolbarButton";
 import Message from "../Message";
 import moment from "moment";
+import chatData from "../../assets/dummy-data/Chats.js";
 
 import "./MessageList.css";
 
@@ -161,13 +162,14 @@ export default function MessageList(props) {
       />
       <div className="message-list-container"> {renderMessages()} </div>
       <Compose
-        rightItems={[
+        leftItems={[
           <ToolbarButton key="photo" icon="ion-ios-camera" />,
           <ToolbarButton key="image" icon="ion-ios-image" />,
           <ToolbarButton key="audio" icon="ion-ios-mic" />,
           <ToolbarButton key="emoji" icon="ion-ios-happy" />,
         ]}
-      />{" "}
+        rightItems={[<ToolbarButton key="photo" icon="ion-ios-send" />]}
+      />
     </div>
   );
 }
