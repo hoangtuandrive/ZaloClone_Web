@@ -82,13 +82,12 @@ function Login() {
                                         <Col span={18}>
                                             <br />
                                             <Button
+                                            className='btnLogin'
                                             onClick={handleSubmit(onSignInPressed)}
                                                 type="primary"
                                                 htmlType="submit"
                                                 block
-                                            >
-                                               
-                                                Đăng nhập
+                                            >Đăng nhập
                                             </Button>
                                         </Col>
                                     </Row>                     
@@ -98,8 +97,12 @@ function Login() {
                 <div className="addtional-link">
                     <Link to="/">Trang chủ</Link>
                  
-                    <Link to="/account/registry">
+                    <Link to="/resign">
                         Bạn chưa có tài khoản ?
+                    </Link>
+
+                    <Link to="/forgotpassword">
+                        Quên mật khẩu ?
                     </Link>
                 </div>
             </div>
