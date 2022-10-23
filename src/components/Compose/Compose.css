@@ -1,47 +1,65 @@
 .compose {
-    padding: 10px;
+    padding: 5px;
     display: flex;
     align-items: center;
-    background: white;
     border-top: 1px solid #eeeef1;
     position: fixed;
     width: calc(100% - 20px);
     bottom: 0px;
-    flex-direction: row;
-}
-
-@supports (backdrop-filter: blur(20px)) {
+    margin-top: 10px;
+  }
+  
+  @supports (backdrop-filter: blur(20px)) {
     .compose {
-        border: none;
-        background-color: rgba(255, 255, 255, 0.8);
-        backdrop-filter: blur(20px);
+      border: none;
+      /* background-color: rgba(255, 255, 255, 0.8); */
+      backdrop-filter: blur(20px);
     }
-}
-
-.compose-input {
+  }
+  .container {
     display: flex;
     flex: 1;
-    border: none;
+    width: 100%;
+    max-width: 100%;
+  }
+  .compose-input {
+    margin-top: 2px;
+    display: flex;
+    width: 65%;
+    max-width: 100%;
+    border: solid;
+    border-width: 0px;
+    border-radius: 20px;
     font-size: 14px;
     height: 40px;
-    background: none;
-    margin-left: 20px;
-}
-
-.compose-input::placeholder {
-    opacity: 0.3;
-}
-
-.compose .toolbar-button {
-    color: #bbbbbf;
     margin-left: 15px;
-}
+    background: #f3f3f5;
+    vertical-align: center;
+    box-sizing: content-box;
+  }
+  
+  .compose-input::placeholder {
+    opacity: 0.3;
+  }
+  
+  .compose .toolbar-button {
+    color: #0084ff;
+    margin-left: 15px;
+  }
+  
+  .compose .toolbar-button:hover {
+    color: #0084ff;
+  }
 
-.compose .toolbar-button:hover {
-    color: #99999c;
-}
+  .send-outline {
+    color: #0084ff;
+  }
 
-.button {
-    display: flex;
-    color: #bbbbbf;
-}
+  .left-button {
+    margin-left: 15px;
+  }
+
+  .right-button {
+    margin-left: 20px;
+    width: 200px;
+  }

@@ -4,17 +4,33 @@ import {AppContext} from '../../context/AppProvider';
 import './InfoUser.scss';
 import { Auth, DataStore } from "aws-amplify";
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
+
+
+
 function InfoUserModal() {
     const {isModalOpen, setIsModalOpen} = useContext(AppContext);
     const [User,setUser]= useState({});
     const handleOk = () => {
-      setIsModalOpen(false);
+      setIsModalOpen(false);  
     };
   
     const handleCancel = () => {
       setIsModalOpen(false);
     };
     
+    const navigate = useNavigate();
+    async function signOut() {
+      try {
+          await Auth.signOut();
+          navigate('/',{replace: true});
+          setIsModalOpen(false);
+          
+      } catch (error) {
+          console.log('error signing out: ', error);
+      }
+  }
+
     useEffect(() => {
         const fetchUser = async () => {
           const currentUser = await Auth.currentAuthenticatedUser();
@@ -27,6 +43,7 @@ function InfoUserModal() {
         };
         fetchUser();
       }, []);
+    
     return ( 
         <div className="container_info">
             <Modal     
@@ -64,7 +81,7 @@ function InfoUserModal() {
             </div>
             <div className="btn_info">
                 <Button className="btn_capnhat">Cập Nhật Thông Tin</Button>
-                <Button className="btn_dangxuat">Đăng Xuất</Button>
+                <Button className="btn_dangxuat" onClick={signOut} >Đăng Xuất</Button>
             </div>
             </div>
 

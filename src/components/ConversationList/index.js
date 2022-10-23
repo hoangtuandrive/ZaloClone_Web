@@ -116,6 +116,7 @@ export default function ConversationList(props) {
           title="Messenger"
           leftItems={[
             // <ToolbarButton key="cog" icon="ion-ios-cog" onClick={handleInfouser} />
+            
             <Button key="cog" onClick={handleInfouser}>Đăng Nhập<LoginOutlined /> </Button>
           ]}
           rightItems={[
