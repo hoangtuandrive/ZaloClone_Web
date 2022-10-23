@@ -5,8 +5,7 @@ import Toolbar from "../Toolbar";
 import ToolbarButton from "../ToolbarButton";
 
 import { AppContext } from "../../context/AppProvider";
-import { LoginOutlined } from "@ant-design/icons";
-import { Button } from "antd";
+import { PlusCircleOutlined, UserOutlined } from "@ant-design/icons";
 import { User } from "../../models";
 import { DataStore } from "aws-amplify";
 
@@ -29,13 +28,18 @@ export default function ConversationList(props) {
         title="Messenger"
         leftItems={[
           // <ToolbarButton key="cog" icon="ion-ios-cog" onClick={handleInfouser} />
-          <Button key="cog" onClick={handleInfouser}>
-            Modal
-            <LoginOutlined />{" "}
-          </Button>,
+          <UserOutlined
+            key="cog"
+            onClick={handleInfouser}
+            className="toolbar-button user"
+          />,
         ]}
         rightItems={[
-          <ToolbarButton key="add" icon="ion-ios-add-circle-outline" />,
+          <PlusCircleOutlined
+            key="cog"
+            // onClick={handleInfouser}
+            className="toolbar-button add"
+          />,
         ]}
       />
       <ConversationSearch />

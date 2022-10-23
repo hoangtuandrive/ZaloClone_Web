@@ -33,7 +33,7 @@ function Login() {
         </div>
         <div className="account_right">
           <Title level={2} style={{ textAlign: "center" }}>
-            <Text style={{ color: "#4d93ff" }}>Đăng Nhập</Text>
+            <Text style={{ color: "#4d93ff" }}>Sign In</Text>
           </Title>
           <div className="form-account">
             <Row gutter={[0, 8]}>
@@ -41,7 +41,7 @@ function Login() {
                 <CustomInput
                   type="text"
                   name="username"
-                  placeholder="UserName"
+                  placeholder="Email"
                   control={control}
                   rules={{ required: "Email is required" }}
                   maxLength={50}
@@ -54,7 +54,7 @@ function Login() {
                   type="password"
                   name="password"
                   control={control}
-                  placeholder="Nhập mật khẩu"
+                  placeholder="Password"
                   rules={{
                     required: "Password is required",
                     minLength: {
@@ -67,7 +67,6 @@ function Login() {
                   inputCol={18}
                 />
               </Col>
-
               <Col span={18}>
                 <br />
                 <Button
@@ -80,15 +79,28 @@ function Login() {
                   Đăng nhập
                 </Button>
               </Col>
+              <Col span={18}>
+                <Button className="btnLogin" htmlType="submit" block>
+                  {" "}
+                  Continue with Facebook!
+                </Button>
+              </Col>{" "}
+              <br />
+              <Col span={18}>
+                <Button className="btnLogin" htmlType="submit" block>
+                  {" "}
+                  Continue with Google!
+                </Button>
+              </Col>
             </Row>
           </div>
 
           <div className="addtional-link">
-            <Link to="/">Trang chủ</Link>
+            <Link to="/">Go Back</Link>
 
-            <Link to="/resign">Bạn chưa có tài khoản ?</Link>
+            <Link to="/resign">Don't have account? Create one</Link>
 
-            <Link to="/forgotpassword">Quên mật khẩu ?</Link>
+            <Link to="/forgotpassword">Forgot Password?</Link>
           </div>
         </div>
       </div>

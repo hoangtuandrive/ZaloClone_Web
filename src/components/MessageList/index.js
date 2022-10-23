@@ -148,7 +148,7 @@ export default function MessageList(props) {
   return (
     <div className="message-list">
       <Toolbar
-        title="Conversation Title"
+        title="Chat"
         rightItems={[
           <ToolbarButton
             key="info"

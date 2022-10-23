@@ -56,10 +56,12 @@
   }
 
   .left-button {
+    margin-top: 5px;
     margin-left: 15px;
   }
 
   .right-button {
+    margin-top: 7px;
     margin-left: 20px;
     width: 200px;
   }

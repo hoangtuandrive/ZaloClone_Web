@@ -1,6 +1,6 @@
 import React from "react";
 import "./Compose.css";
-// import Button from "@mui/material";
+import { Button } from "antd";
 
 export default function Compose(props) {
   return (
@@ -13,7 +13,9 @@ export default function Compose(props) {
           placeholder="Type a message"
           spellCheck="false"
         />
-        <div className="right-button"> {props.rightItems} </div>
+        <div className="right-button" onClick={() => console.log("send")}>
+          <Button type="primary">Send</Button>
+        </div>
       </div>
     </div>
   );

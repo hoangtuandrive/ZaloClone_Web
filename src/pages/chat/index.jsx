@@ -8,6 +8,8 @@ import {
   CommentOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
+import AddFriendModal from "../../components/Modals/AddFrienModal";
+import InfoUserModal from "../../components/Modals/InfoUserModal";
 
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -51,6 +53,8 @@ export default function Messenger(props) {
           </div>
         </div>
       </Content>
+      <InfoUserModal />
+      <AddFriendModal />
     </Layout>
   );
 }

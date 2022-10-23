@@ -1,4 +1,30 @@
 .conversation-list {
   display: flex;
   flex-direction: column;
+  
+}
+
+.toolbar-button {
+  color: #007aff;
+  font-size: 24px;
+  transition: all 0.1s;
+
+}
+
+.toolbar-button:hover {
+  cursor: pointer;
+  color: #0063ce;
+}
+
+.toolbar-button:active {
+  color: #007aff;
+  opacity: 0.25;
+}
+
+.user {
+  padding-left: 15px;
+}
+
+.add {
+  padding-right: 15px;
 }
