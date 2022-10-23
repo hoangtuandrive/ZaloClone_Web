@@ -1,9 +1,12 @@
-import React, { useContext } from "react";
+import React, { useContext,useEffect } from "react";
 import { Button,Modal } from 'antd';
 import {AppContext} from '../../context/AppProvider';
 import './InfoUser.scss';
+import { Auth, DataStore } from "aws-amplify";
+import { useState } from "react";
 function InfoUserModal() {
     const {isModalOpen, setIsModalOpen} = useContext(AppContext);
+    const [User,setUser]= useState({});
     const handleOk = () => {
       setIsModalOpen(false);
     };
@@ -11,7 +14,19 @@ function InfoUserModal() {
     const handleCancel = () => {
       setIsModalOpen(false);
     };
-
+    
+    useEffect(() => {
+        const fetchUser = async () => {
+          const currentUser = await Auth.currentAuthenticatedUser();
+          var name= currentUser.attributes.name;
+          var email= currentUser.attributes.email;
+          var sub=currentUser.attributes.sub;
+          setUser({name,email,sub}); 
+          console.log(currentUser);
+        
+        };
+        fetchUser();
+      }, []);
     return ( 
         <div className="container_info">
             <Modal     
@@ -28,13 +43,15 @@ function InfoUserModal() {
             style={{width:100,
                     height:100}} />
             </div>
-            <h2>Trần Hoàng Long</h2>
+            
+         
+            <h2>{User.name}</h2>
             <h3>Thông tin cá nhân</h3>
             <div className="content">
             <div className="content_top">
             <div>
                 <span className="lable_info"  style={{paddingRight:5}}>Điện thoại:</span>
-                <span className="lable_infoA">0394758355</span>
+                <span className="lable_infoA">{User.email}</span>
             </div>
             <div>
                 <span className="lable_info" style={{paddingRight:10}}>Giới Tính: </span>
