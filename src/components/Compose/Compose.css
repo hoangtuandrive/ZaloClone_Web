@@ -13,7 +13,7 @@
     .compose {
       border: none;
       /* background-color: rgba(255, 255, 255, 0.8); */
-      backdrop-filter: blur(20px);
+      backdrop-filter: blur(50px);
     }
   }
   .container {
@@ -25,8 +25,8 @@
   .compose-input {
     margin-top: 2px;
     display: flex;
-    width: 65%;
-    max-width: 100%;
+    width: 60%;
+    max-width: 70%;
     border: solid;
     border-width: 0px;
     border-radius: 20px;
