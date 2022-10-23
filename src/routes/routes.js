@@ -5,13 +5,11 @@ import Resign from "../pages/resign";
 import AuthResign from "../pages/authResign";
 
 const publicRoutes = [
-    { path: '/', component: Home },
-    { path: '/chat', component: chat },
-    { path: '/login', component: Login },
-    { path: '/resign', component: Resign },
-    { path: '/authResign', component: AuthResign },
-   
-
+  { path: "/", component: Home },
+  { path: "/chat", component: chat },
+  { path: "/login", component: Login },
+  { path: "/resign", component: Resign },
+  { path: "/authResign", component: AuthResign },
 ];
 
 const privateRoutes = [];

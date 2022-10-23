@@ -14,6 +14,12 @@
   padding: 10px;
 }
 
+.navbar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 .scrollable {
   position: relative;
   overflow-y: scroll;

@@ -5,7 +5,6 @@ import ToolbarButton from "../ToolbarButton";
 import Message from "../Message";
 import moment from "moment";
 import chatData from "../../assets/dummy-data/Chats.js";
-
 import "./MessageList.css";
 
 const MY_USER_ID = "apple";
