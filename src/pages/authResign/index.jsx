@@ -43,25 +43,29 @@ function AuthResign()  {
     return (   
         <div className="container-authResign">        
           
-            <div className="content">
+            <div className="content_Auth">
                     
 
-                    <img src={'https://herobot.app/wp-content/uploads/2020/10/virtual-talk-ai-chatbot-1.jpg'} alt="Anh Trang chu" className="AnhXacThuc" />
+                    <img src={IMAGE_ACCOUNT_PAGE} alt="Anh Trang chu" className="AnhXacThuc" />
                   
                     <div className="Auth">
                         <h1>Nhập mã xác thực</h1>
                         <p>Vui lòng nhập mã xác thực được gửi từ Email </p>
                         <div className="Auth_Input">
+                            <div  className="NhapUser">
                         <CustomInput
-                                name="username"
-                               
+                                name="username"                              
                                 control={control}
                                 placeholder="Username"
                                 rules={{
                                     required: "Username code is required",
                                 }}
-                                className="NhapCode"
+                                
                                 />
+
+                            </div>
+                            <div className="NhapCode">
+
                              <CustomInput
                              name="code"
                           
@@ -70,8 +74,9 @@ function AuthResign()  {
                              rules={{
                                  required: "Confirmation code is required",
                              }}
-                             className="NhapCode"
+                            
                               />
+                            </div>
                           
                         <Button   className="Btn"  onClick={handleSubmit(onConfirmPressed)} >Hoàn Thành</Button>
                             {console.log(userContext)}
