@@ -76,7 +76,7 @@ function Login() {
                   htmlType="submit"
                   block
                 >
-                  Đăng nhập
+                  Sign In
                 </Button>
               </Col>
               <Col span={18}>
