@@ -13,6 +13,7 @@ import { AppContext } from "../../context/AppProvider";
 
 import { useNavigate } from "react-router-dom";
 import { Auth, DataStore } from "aws-amplify";
+import InfoUserModal from "../Modals/InfoUserModal";
 
 export default function InfoUser() {
   const navigate = useNavigate();
