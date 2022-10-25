@@ -1,21 +1,21 @@
 import React from "react";
-import ConversationList from "../../components/ConversationList/ConversationList";
+import ContactList from "../../components/ContactList/ContactList";
 import MessageList from "../../components/MessageList";
 import Slidebar from "../../components/Slidebar";
-import "./Messenger.css";
+import "./Contact.css";
 import InfoUserModal from "../../components/Modals/InfoUserModal";
 
-export default function Messenger(props) {
+export default function Contact(props) {
   return (
     <div className="messenger">
       <div className="slidebar">
           <Slidebar/>
       </div>
       <div className="scrollable sidebar">
-        <ConversationList />
+        <ContactList />
       </div>
       <div className="scrollable content">
-        <MessageList />
+        {/* <MessageList /> */}
       </div>
       <InfoUserModal />
     </div>

@@ -30,7 +30,7 @@ exports.handler = async (event, context) => {
     name: { S: event.request.userAttributes.name },
     email: { S: event.request.userAttributes.email },
     imageUri: {
-      S: "https://www.logiquetechno.com/wp-content/uploads/2020/11/retirer-photo-de-profil-facebook.png",
+      S: "https://cdn-icons-png.flaticon.com/512/3003/3003035.png",
     },
   };
   const params = {

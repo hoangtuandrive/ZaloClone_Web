@@ -5,12 +5,12 @@ import './InfoUser.scss';
 import { Auth, DataStore } from "aws-amplify";
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
-
+import {User} from '../../models';
 
 
 function InfoUserModal() {
     const {isModalOpen, setIsModalOpen} = useContext(AppContext);
-    const [User,setUser]= useState({});
+    const [UserIn,setUserIn]= useState({});
     const handleOk = () => {
       setIsModalOpen(false);  
     };
@@ -20,28 +20,25 @@ function InfoUserModal() {
     };
     
     const navigate = useNavigate();
-    async function signOut() {
-      try {
-          await Auth.signOut();
-          navigate('/',{replace: true});
-          setIsModalOpen(false);
-          
-      } catch (error) {
-          console.log('error signing out: ', error);
-      }
-  }
+  
 
     useEffect(() => {
         const fetchUser = async () => {
           const currentUser = await Auth.currentAuthenticatedUser();
-          var name= currentUser.attributes.name;
-          var email= currentUser.attributes.email;
-          var sub=currentUser.attributes.sub;
-          setUser({name,email,sub}); 
+          const user=(await DataStore.query(User)).filter(
+             (User) => User.id === currentUser.attributes.sub);
+         
+          console.log(user);
           console.log(currentUser);
+          // var name= currentUser.attributes.name;
+          // var email= currentUser.attributes.email;
+          // var sub=currentUser.attributes.sub;
+          //  setUserIn(user.name); 
+          //  var ten=user..name;
+        //  console.log(ten);
         
         };
-        fetchUser();
+         fetchUser();
       }, []);
     
     return ( 
@@ -62,13 +59,13 @@ function InfoUserModal() {
             </div>
             
          
-            <h2>{User.name}</h2>
+            <h2>{UserIn.name}</h2>
             <h3>Thông tin cá nhân</h3>
             <div className="content">
             <div className="content_top">
             <div>
                 <span className="lable_info"  style={{paddingRight:5}}>Điện thoại:</span>
-                <span className="lable_infoA">{User.email}</span>
+                <span className="lable_infoA">{UserIn.email}</span>
             </div>
             <div>
                 <span className="lable_info" style={{paddingRight:10}}>Giới Tính: </span>
@@ -81,7 +78,7 @@ function InfoUserModal() {
             </div>
             <div className="btn_info">
                 <Button className="btn_capnhat">Cập Nhật Thông Tin</Button>
-                <Button className="btn_dangxuat" onClick={signOut} >Đăng Xuất</Button>
+                
             </div>
             </div>
 

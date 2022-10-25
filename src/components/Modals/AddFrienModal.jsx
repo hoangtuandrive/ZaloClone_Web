@@ -64,7 +64,7 @@ function AddFriendModal() {
     async function fetchUserList(search) {
     
        const fetchUser= (await DataStore.query(User)).filter(
-        (User) => User.name === search).then(setuseradd);
+        (User) => User.name === search);
       //  ).map((doc)=>({
       //   label: doc.name,
       //   value: doc.id,
