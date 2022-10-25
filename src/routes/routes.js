@@ -5,6 +5,7 @@ import Resign from "../pages/resign";
 import AuthResign from "../pages/authResign";
 import ForgotPassword from "../pages/forgotpassword/index";
 import ResetPassword from "../pages/forgotpassword/resetpassword";
+import Contact from "../pages/Contact";
 
 const publicRoutes = [
   { path: "/", component: Home },
@@ -14,6 +15,7 @@ const publicRoutes = [
   { path: "/authResign", component: AuthResign },
   { path: "/forgotpassword", component: ForgotPassword },
   { path: "/resetpassword", component: ResetPassword },
+  { path: "/contact", component: Contact },
 ];
 
 const privateRoutes = [];

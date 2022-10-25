@@ -5,6 +5,7 @@ import ToolbarButton from "../ToolbarButton";
 import Message from "../Message";
 import moment from "moment";
 import chatData from "../../assets/dummy-data/Chats.js";
+
 import "./MessageList.css";
 
 const MY_USER_ID = "apple";
@@ -22,20 +23,21 @@ export default function MessageList(props) {
         id: 1,
         author: "apple",
         message:
-          "Messenger[11] is a proprietary instant messaging app and platform developed by Meta Platforms. Originally developed as Facebook Chat in 2008, the company revamped its messaging service in 2010, released standalone iOS and Android apps in 2011, and released standalone Facebook Portal hardware for Messenger calling in 2018. In April 2015, Facebook launched a dedicated website interface, Messenger.com, and separated the messaging functionality from the main Facebook app, allowing users to use the web interface or download one of the standalone apps. In April 2020, Facebook released a Messenger desktop app for Windows and macOS.",
+          "Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world!",
         timestamp: new Date().getTime(),
       },
       {
         id: 2,
         author: "orange",
         message:
-          "Messenger is used to send messages and exchange photos, videos, stickers, audio, and files, and also react to other users' messages and interact with bots. The service also supports voice and video calling. The standalone apps support using multiple accounts, conversations with optional end-to-end encryption, and playing games.",
+          "Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world!",
         timestamp: new Date().getTime(),
       },
       {
         id: 3,
         author: "orange",
-        message: "Hello",
+        message:
+          "Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world! Hello world!",
         timestamp: new Date().getTime(),
       },
       {
@@ -148,7 +150,7 @@ export default function MessageList(props) {
   return (
     <div className="message-list">
       <Toolbar
-        title="Chat"
+        title="Conversation Title"
         rightItems={[
           <ToolbarButton
             key="info"

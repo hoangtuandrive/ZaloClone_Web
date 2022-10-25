@@ -1,67 +1,79 @@
-  import { IconButton} from '@mui/material';
-  import React from 'react'
-  import { useNavigate } from 'react-router-dom';
-  import {WechatOutlined, CloudOutlined, MedicineBoxOutlined,ExceptionOutlined ,LogoutOutlined,ContactsOutlined } from "@ant-design/icons"
-  import "./InfoUser.css";
-  import {AppContext} from '../../context/AppProvider';
-  
-  
-  export default function InfoUser() {
-    const navigate = useNavigate();
-    const {setIsModalOpen} =  React.useContext(AppContext);
-    const handleInfouser = () =>{
-      setIsModalOpen(true);
+import { Button, IconButton } from "@mui/material";
+import React from "react";
+import {
+  WechatOutlined,
+  CloudOutlined,
+  MedicineBoxOutlined,
+  ExceptionOutlined,
+  LogoutOutlined,
+  ContactsOutlined,
+} from "@ant-design/icons";
+import "./InfoUser.css";
+import { AppContext } from "../../context/AppProvider";
+
+import { useNavigate } from "react-router-dom";
+import { Auth, DataStore } from "aws-amplify";
+import InfoUserModal from "../Modals/InfoUserModal";
+
+export default function InfoUser() {
+  const navigate = useNavigate();
+  const { setIsModalOpen } = React.useContext(AppContext);
+  const handleInfouser = () => {
+    setIsModalOpen(true);
+  };
+  const handelChat = () => {
+    navigate("/chat", { replace: true });
+  };
+  const handelContact = () => {
+    navigate("/contact", { replace: true });
+  };
+
+  async function signOut() {
+    try {
+      await Auth.signOut();
+      navigate("/", { replace: true });
+      // DataStore.clear();
+      setIsModalOpen(false);
+    } catch (error) {
+      console.log("error signing out: ", error);
     }
-
-      const handleNavigateChat = () => {
-      navigate('/chat',{replace: true});
-      }
-
-    return (
-      <div className='infouser-item'>
-        <IconButton className='btn-photo'>
-          <img className="infouser-photo" src="http://www.psdgraphics.com/file/user-icon.jpg" alt="placeholder" />
-        </IconButton>
-  
-        
-        <div className='icon-top'>
-        <IconButton onClick={handleNavigateChat}>
-              <WechatOutlined style={{ fontSize: '35px', color: 'white' }} />
-        </IconButton>
-        <IconButton >
-              <ContactsOutlined style={{ fontSize: '40px', color: 'white' }} />
-        </IconButton>
-  
-        
-        <IconButton onClick={handleInfouser} >
-        <ExceptionOutlined style={{ fontSize: '35px', color: 'white' }}/>
-        </IconButton>
-              
-        </div>
-  
-  
-        <div className='icon-footer'>
-        <IconButton>
-              <CloudOutlined style={{ fontSize: '35px', color: 'white' }} />
-        </IconButton>
-        <IconButton>
-              <MedicineBoxOutlined style={{ fontSize: '35px', color: 'white' }} />
-        </IconButton>
-  
-        
-        <IconButton>
-        
-        <LogoutOutlined style={{ fontSize: '30px', color: 'white' }}/>
-        </IconButton>
-              
-        </div>
-       
-        
-        
-  
-            
-      </div>
-      
-    )
   }
-  
+
+  return (
+    <div className="infouser-item">
+      <Button className="btn-photo">
+        <img
+          className="infouser-photo"
+          src="http://www.psdgraphics.com/file/user-icon.jpg"
+          alt="placeholder"
+        />
+      </Button>
+
+      <div className="icon-top">
+        <Button onClick={handelChat}>
+          <WechatOutlined style={{ fontSize: "35px", color: "white" }} />
+        </Button>
+        <Button onClick={handelContact}>
+          <ContactsOutlined style={{ fontSize: "40px", color: "white" }} />
+        </Button>
+
+        <Button onClick={handleInfouser}>
+          <ExceptionOutlined style={{ fontSize: "35px", color: "white" }} />
+        </Button>
+      </div>
+
+      <div className="icon-footer">
+        <Button>
+          <CloudOutlined style={{ fontSize: "35px", color: "white" }} />
+        </Button>
+        <Button>
+          <MedicineBoxOutlined style={{ fontSize: "35px", color: "white" }} />
+        </Button>
+
+        <Button onClick={signOut}>
+          <LogoutOutlined style={{ fontSize: "30px", color: "white" }} />
+        </Button>
+      </div>
+    </div>
+  );
+}

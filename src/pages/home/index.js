@@ -10,7 +10,7 @@ function Home() {
       <Header />
       <Title />
       <About />
-      {/* <Footers /> */}
+      <Footers />
     </div>
   );
 }
