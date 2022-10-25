@@ -29,7 +29,7 @@ export default function ContactList(props) {
           leftItems={[
              <ToolbarButton key="cog" icon="ion-ios-cog"  />
             
-            // <Button key="cog" onClick={handleInfouser}>Đăng Nhập<LoginOutlined /> </Button>
+           //  <Button key="cog" >Đăng Nhập<LoginOutlined /> </Button>
           ]}
           rightItems={[
             <ToolbarButton key="add" icon="ion-ios-add-circle-outline" />

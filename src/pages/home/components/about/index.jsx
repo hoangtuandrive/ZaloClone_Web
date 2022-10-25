@@ -1,5 +1,5 @@
 import React from "react";
-import {Row,Col,Image} from 'antd';
+import { Image } from 'antd';
 import AnhMau from "../../../../assets/images/homeabout.png";
 
 import {  FireOutlined } from '@ant-design/icons';
