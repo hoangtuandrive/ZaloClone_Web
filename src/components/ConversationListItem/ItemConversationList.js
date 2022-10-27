@@ -1,15 +1,13 @@
 import React, {useEffect,useState} from 'react';
-
-
 import './ConversationListItem.css';
 import { ChatRoom,User,ChatRoomUser,Message } from '../../models';
 import { Auth, DataStore } from "aws-amplify";
 import { Spin } from 'antd';
 // import moment from "moment";
+import { AppContext } from '../../context/AppProvider';
+
 export default function ConversationListItem(props) {
-  // useEffect(() => {
-  //   shave('.conversation-snippet', 20);
-  // })
+ 
   const [user, setUser] = useState(null);
   const [lastMessage, setLastMessage] = useState();
   useEffect(() => {
@@ -55,9 +53,11 @@ export default function ConversationListItem(props) {
   // const time = moment(lastMessage?.createdAt).from(moment());
 
     // const { imageUri, name, text } = props.data;
+   
+
 
     return (
-      <div className="conversation-list-item">
+      <div className="conversation-list-item" >
         <img className="conversation-photo" src={props.data.imageUri || user?.imageUri} alt="placeholder" />
         <div className="conversation-info">
           <h1 className="conversation-title">{props.data.name || user?.name  }</h1>

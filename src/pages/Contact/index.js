@@ -17,7 +17,7 @@ export default function Contact(props) {
       <div className="scrollable content">
         {/* <MessageList /> */}
       </div>
-      <InfoUserModal />
+      
     </div>
   );
 }

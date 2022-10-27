@@ -5,11 +5,14 @@ function AppProvider({ children }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAddFriendVisible, setisAddFriendVisible] = useState(false);
   const [userContext, setuserContext] = useState("");
+  const [selectedRoomId,setSelectedRoomId]=useState("");
 
+  
   const clearState = () => {
     setIsModalOpen(false);
     setisAddFriendVisible(false);
     setuserContext("");
+    setSelectedRoomId("");
   };
   return (
     <AppContext.Provider
@@ -21,6 +24,8 @@ function AppProvider({ children }) {
         setisAddFriendVisible,
         userContext,
         setuserContext,
+        selectedRoomId,
+        setSelectedRoomId,
       }}
     >
       {children}
