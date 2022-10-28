@@ -1,8 +1,10 @@
 type Message @model @auth(rules: [{allow: public}]) {
   id: ID!
-  content: String!
+  content: String
   userID: ID! @index(name: "byUser")
   chatroomID: ID! @index(name: "byChatRoom")
+  image: String
+  audio: String
 }
 
 type ChatRoom @model @auth(rules: [{allow: public}]) {
@@ -11,6 +13,9 @@ type ChatRoom @model @auth(rules: [{allow: public}]) {
   LastMessage: Message @hasOne
   Messages: [Message] @hasMany(indexName: "byChatRoom", fields: ["id"])
   ChatRoomUsers: [User] @manyToMany(relationName: "ChatRoomUser")
+  Admin: User @hasOne
+  name: String
+  imageUri: String
 }
 
 type User @model @auth(rules: [{allow: public}]) {
@@ -20,4 +25,5 @@ type User @model @auth(rules: [{allow: public}]) {
   status: String
   Messages: [Message] @hasMany(indexName: "byUser", fields: ["id"])
   chatrooms: [ChatRoom] @manyToMany(relationName: "ChatRoomUser")
-} 
+}
+ 
