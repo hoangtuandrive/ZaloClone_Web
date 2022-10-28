@@ -32,7 +32,7 @@ export default function InfoUser() {
     try {
       await Auth.signOut();
       navigate("/", { replace: true });
-      // DataStore.clear();
+      DataStore.clear();
       setIsModalOpen(false);
     } catch (error) {
       console.log("error signing out: ", error);

@@ -1,0 +1,46 @@
+.message {
+    display: flex;
+    flex-direction: row; 
+    margin: 20px 15px;
+ 
+}
+.messright{
+    margin-right: 8px;
+}
+.message.leftContainer{
+    
+    margin-left: 10px;
+    margin-right: auto;
+    align-items: center;
+    
+  };
+.message.rightContainer{
+    display: flex;
+    margin-left: auto;
+ 
+    justify-content: flex-start;
+    flex-direction: row-reverse;
+    align-items: center;
+  };
+.messImg{
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    border-radius: 50%;
+    margin-right: 10px;
+
+    img {
+        width: 150%;
+        height: 100%;
+        object-fit: contain;
+        object-position: center;
+    }
+}
+.messText {
+    padding: 10px;
+    border-radius: 20px;
+    background-color: rgb(55 74 216);
+    color: black;
+    word-wrap: break-word;
+    max-width: 500px;
+}

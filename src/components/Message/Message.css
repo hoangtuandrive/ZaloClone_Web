@@ -62,3 +62,23 @@
     border-top-right-radius: 2px;
     border-bottom-right-radius: 2px;
 }
+
+.cotainer {
+    background-color: "#3777f0";
+    margin: 5px;
+    padding: 10px;
+    border-radius: 10px;
+    max-width: "70%";
+}
+
+.imgcustom {
+    margin-top: 10px;
+    margin-left: 5px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.contain {
+    flex-direction: row;
+}

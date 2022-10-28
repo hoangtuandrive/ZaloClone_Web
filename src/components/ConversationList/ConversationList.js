@@ -8,6 +8,7 @@ import "./ConversationList.css";
 import { AppContext } from "../../context/AppProvider";
 import { User, ChatRoomUser, ChatRoom, Message } from "../../models";
 import { Auth, DataStore } from "aws-amplify";
+import MessageList from "../MessageList";
 export default function ConversationList(props) {
   const { setIsModalOpen } = React.useContext(AppContext);
   const [users, setUsers] = useState([]);
@@ -15,7 +16,9 @@ export default function ConversationList(props) {
     setIsModalOpen(true);
   };
 
+  const { setSelectedRoomId } = React.useContext(AppContext);
   const [chatRooms, setChatRooms] = useState([]);
+  // const {setSelectedRoomId} = React.useContext(AppContext);
 
   useEffect(() => {
     const fetchChatRooms = async () => {
@@ -54,7 +57,9 @@ export default function ConversationList(props) {
       />
       <ConversationSearch />
       {chatRooms.map((conversation) => (
-        <ConversationListItem key={conversation.id} data={conversation} />
+         <div key={conversation.id} onClick={()=>setSelectedRoomId(conversation.id)}>
+          <ConversationListItem key={conversation.id} data={conversation}/> 
+       </div>
       ))}
     </div>
   );

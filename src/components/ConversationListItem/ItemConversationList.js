@@ -1,6 +1,6 @@
 import React, {useEffect,useState} from 'react';
-
-
+import moment from "moment";
+import { useNavigate } from 'react-router-dom';
 import './ConversationListItem.css';
 import { ChatRoom,User,ChatRoomUser,Message } from '../../models';
 import { Auth, DataStore } from "aws-amplify";
@@ -12,7 +12,10 @@ export default function ConversationListItem(props) {
   // })
   const [user, setUser] = useState(null);
   const [lastMessage, setLastMessage] = useState();
+  const navigate = useNavigate();
   useEffect(() => {
+   
+
     const fetchUsers = async () => {
       const fetchedChatRoomUsers = (await DataStore.query(ChatRoomUser))
         .filter((chatRoomUser) => chatRoomUser.chatRoom.id === props.data.id)
@@ -51,16 +54,35 @@ export default function ConversationListItem(props) {
   );
 }
 
-  //get time
+  // get time
   // const time = moment(lastMessage?.createdAt).from(moment());
 
+  const onPress = () => {
+    console.log(props.data.id);
+    const setNewMessageToZero = async () => {
+      DataStore.save(
+        ChatRoom.copyOf(props.data, (updatedChatRoom) => {
+          updatedChatRoom.newMessages = 0;
+          console.log(updatedChatRoom.newMessages);
+        })
+      );
+    };
+    setNewMessageToZero();
+    // navigate("/chat",{replace: true});
+  }
     // const { imageUri, name, text } = props.data;
 
     return (
-      <div className="conversation-list-item">
+      <div className="conversation-list-item" onClick={onPress}>
         <img className="conversation-photo" src={props.data.imageUri || user?.imageUri} alt="placeholder" />
+
+        {/* {!!props.data.newMessages && (
+          <h1>{props.data.newMessages}</h1>
+
+        )} */}
         <div className="conversation-info">
           <h1 className="conversation-title">{props.data.name || user?.name  }</h1>
+          {/* {console.log("alo", time)} */}
           <p className="conversation-snippet">{lastMessage?.content}</p>
           {/* {console.log(user)} */}
         </div>
