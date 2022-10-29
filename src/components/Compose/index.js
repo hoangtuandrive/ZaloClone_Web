@@ -1,16 +1,18 @@
-import React, {useState} from "react";
+import React, {useEffect, useState,useContext} from "react";
 import "./Compose.css";
 import { Button } from "antd";
 import { ChatRoomUser, Message, ChatRoom } from "../../../src/models";
 import { Auth, DataStore } from "aws-amplify";
+import { AppContext } from "../../context/AppProvider";
 
 export default function Compose(props) {
   // console.log("Right", props);
   console.log("chatroom", {props});
   const [message, setMessage] = useState("");
-
+  const { selectedRoomId } =useContext(AppContext);
   // console.log("alo", props.data.id);
-
+ 
+  console.log(props.chatRoom);
   const saveNewMessage = async () => {
     // get all the users of this chatroom
     const user = await Auth.currentAuthenticatedUser();
@@ -18,7 +20,7 @@ export default function Compose(props) {
       new Message({
         content: message,
         userID: user.attributes.sub,
-        chatroomID: props.data.id,
+        chatroomID: selectedRoomId,
       })
     );
     updateLastMessage(newMessage);
@@ -28,7 +30,7 @@ export default function Compose(props) {
 
   const updateLastMessage = async (newMessage) => {
     DataStore.save(
-      ChatRoom.copyOf(props.data, (updatedChatRoom) => {
+      ChatRoom.copyOf(props.chatRoom, (updatedChatRoom) => {
         updatedChatRoom.newMessages = 1;
         updatedChatRoom.LastMessage = newMessage;
       })
@@ -39,6 +41,7 @@ export default function Compose(props) {
 
   const onPress = () => {
       saveNewMessage();
+      
   };
 
 
@@ -55,7 +58,7 @@ export default function Compose(props) {
           spellCheck="false"
         />
         <div className="right-button" onClick={() => console.log("send")}>
-          <Button type="primary" className="btnSend" onClick={onPress}>Send</Button>
+          <Button type="primary" className="btnSend" onClick={onPress} >Send</Button>
         </div>
       </div>
     </div>

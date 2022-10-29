@@ -9,7 +9,7 @@ export default function Messenger(props) {
   return (
     <div className="messenger">
       <div className="slidebar">
-        <Slidebar />
+          <Slidebar/>
       </div>
       <div className="scrollable sidebar">
         <ConversationList />
@@ -17,7 +17,7 @@ export default function Messenger(props) {
       <div className="scrollable content">
         <MessageList />
       </div>
-      <InfoUserModal />
+    
     </div>
   );
 }

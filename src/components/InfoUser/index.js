@@ -1,5 +1,5 @@
 import { Button, IconButton } from "@mui/material";
-import React from "react";
+import React, { useEffect ,useState} from "react";
 import {
   WechatOutlined,
   CloudOutlined,
@@ -14,10 +14,12 @@ import { AppContext } from "../../context/AppProvider";
 import { useNavigate } from "react-router-dom";
 import { Auth, DataStore } from "aws-amplify";
 import InfoUserModal from "../Modals/InfoUserModal";
+import { User } from "../../models";
 
 export default function InfoUser() {
   const navigate = useNavigate();
-  const { setIsModalOpen } = React.useContext(AppContext);
+  const [currentUser, setCurrentUsers] = useState();
+  const { setIsModalOpen,setSelectedRoomId } = React.useContext(AppContext);
   const handleInfouser = () => {
     setIsModalOpen(true);
   };
@@ -28,12 +30,27 @@ export default function InfoUser() {
     navigate("/contact", { replace: true });
   };
 
+  const fetchUser = async () => {
+    const currentUserCognito = await Auth.currentAuthenticatedUser();
+    const dbUser = await DataStore.query(
+      User,
+      currentUserCognito.attributes.sub
+    );
+    setCurrentUsers(dbUser);
+  };
+ 
+  useEffect(() => {
+  fetchUser();
+  }, []);
+
   async function signOut() {
     try {
+      setSelectedRoomId(null);
       await Auth.signOut();
       navigate("/", { replace: true });
-      DataStore.clear();
+    DataStore.clear();
       setIsModalOpen(false);
+     
     } catch (error) {
       console.log("error signing out: ", error);
     }
@@ -44,7 +61,7 @@ export default function InfoUser() {
       <Button className="btn-photo">
         <img
           className="infouser-photo"
-          src="http://www.psdgraphics.com/file/user-icon.jpg"
+          src={currentUser?.imageUri}
           alt="placeholder"
         />
       </Button>

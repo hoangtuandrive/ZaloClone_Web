@@ -5,8 +5,9 @@ function AppProvider({ children }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAddFriendVisible, setisAddFriendVisible] = useState(false);
   const [userContext, setuserContext] = useState("");
-  const [selectedRoomId, setSelectedRoomId] = useState("");
+  const [selectedRoomId,setSelectedRoomId]=useState("");
 
+  
   const clearState = () => {
     setIsModalOpen(false);
     setisAddFriendVisible(false);

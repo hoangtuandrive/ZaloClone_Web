@@ -1,15 +1,13 @@
 import React, {useEffect,useState} from 'react';
-import moment from "moment";
-import { useNavigate } from 'react-router-dom';
 import './ConversationListItem.css';
 import { ChatRoom,User,ChatRoomUser,Message } from '../../models';
 import { Auth, DataStore } from "aws-amplify";
 import { Spin } from 'antd';
 // import moment from "moment";
+import { AppContext } from '../../context/AppProvider';
+
 export default function ConversationListItem(props) {
-  // useEffect(() => {
-  //   shave('.conversation-snippet', 20);
-  // })
+ 
   const [user, setUser] = useState(null);
   const [lastMessage, setLastMessage] = useState();
   const navigate = useNavigate();
@@ -71,9 +69,11 @@ export default function ConversationListItem(props) {
     // navigate("/chat",{replace: true});
   }
     // const { imageUri, name, text } = props.data;
+   
+
 
     return (
-      <div className="conversation-list-item" onClick={onPress}>
+      <div className="conversation-list-item" >
         <img className="conversation-photo" src={props.data.imageUri || user?.imageUri} alt="placeholder" />
 
         {/* {!!props.data.newMessages && (

@@ -16,6 +16,9 @@
       "auth": {
         "UngDungNhanTinNhom10": {}
       },
+      "storage": {
+        "s3ed00ee1a": {}
+      },
       "function": {
         "UngDungNhanTinNhom10PostConfirmation": {
           "deploymentBucketName": "amplify-ungdungnhantinnhom10-staging-30651-deployment",

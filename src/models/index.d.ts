@@ -29,20 +29,78 @@ export declare class Message {
   static copyOf(source: Message, mutator: (draft: MutableModel<Message, MessageMetaData>) => MutableModel<Message, MessageMetaData> | void): Message;
 }
 
-export declare class ChatRoom {
+type LazyMessage = {
+  readonly id: string;
+  readonly content?: string | null;
+  readonly userID: string;
+  readonly chatroomID: string;
+  readonly image?: string | null;
+  readonly audio?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+};
+
+export declare type Message = LazyLoading extends LazyLoadingDisabled
+  ? EagerMessage
+  : LazyMessage;
+
+export declare const Message: (new (
+  init: ModelInit<Message, MessageMetaData>
+) => Message) & {
+  copyOf(
+    source: Message,
+    mutator: (
+      draft: MutableModel<Message, MessageMetaData>
+    ) => MutableModel<Message, MessageMetaData> | void
+  ): Message;
+};
+
+type EagerChatRoom = {
   readonly id: string;
   readonly newMessages?: number | null;
   readonly LastMessage?: Message | null;
   readonly Messages?: (Message | null)[] | null;
   readonly ChatRoomUsers?: (ChatRoomUser | null)[] | null;
+  readonly Admin?: User | null;
+  readonly name?: string | null;
+  readonly imageUri?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly chatRoomLastMessageId?: string | null;
-  constructor(init: ModelInit<ChatRoom, ChatRoomMetaData>);
-  static copyOf(source: ChatRoom, mutator: (draft: MutableModel<ChatRoom, ChatRoomMetaData>) => MutableModel<ChatRoom, ChatRoomMetaData> | void): ChatRoom;
+  readonly chatRoomAdminId?: string | null;
 }
 
-export declare class User {
+type LazyChatRoom = {
+  readonly id: string;
+  readonly newMessages?: number | null;
+  readonly LastMessage: AsyncItem<Message | undefined>;
+  readonly Messages: AsyncCollection<Message>;
+  readonly ChatRoomUsers: AsyncCollection<ChatRoomUser>;
+  readonly Admin: AsyncItem<User | undefined>;
+  readonly name?: string | null;
+  readonly imageUri?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+  readonly chatRoomLastMessageId?: string | null;
+  readonly chatRoomAdminId?: string | null;
+}
+
+export declare type ChatRoom = LazyLoading extends LazyLoadingDisabled
+  ? EagerChatRoom
+  : LazyChatRoom;
+
+export declare const ChatRoom: (new (
+  init: ModelInit<ChatRoom, ChatRoomMetaData>
+) => ChatRoom) & {
+  copyOf(
+    source: ChatRoom,
+    mutator: (
+      draft: MutableModel<ChatRoom, ChatRoomMetaData>
+    ) => MutableModel<ChatRoom, ChatRoomMetaData> | void
+  ): ChatRoom;
+};
+
+type EagerUser = {
   readonly id: string;
   readonly name: string;
   readonly imageUri?: string | null;

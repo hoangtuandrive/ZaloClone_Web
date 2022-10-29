@@ -8,33 +8,42 @@ import "./ConversationList.css";
 import { AppContext } from "../../context/AppProvider";
 import { User, ChatRoomUser, ChatRoom, Message } from "../../models";
 import { Auth, DataStore } from "aws-amplify";
-import MessageList from "../MessageList";
+import { Link } from "react-router-dom";
+import { set } from "lodash";
+import { getGrid2UtilityClass } from "@mui/material";
+
+
+
 export default function ConversationList(props) {
   const { setIsModalOpen } = React.useContext(AppContext);
-  const [users, setUsers] = useState([]);
+  //const [users, setUsers] = useState([]);
   const handleInfouser = () => {
     setIsModalOpen(true);
   };
 
   const { setSelectedRoomId } = React.useContext(AppContext);
   const [chatRooms, setChatRooms] = useState([]);
-  // const {setSelectedRoomId} = React.useContext(AppContext);
-
+  const fetchChatRooms = async () => {
+    const currentUser = await Auth.currentAuthenticatedUser();  
+    
+    console.log(currentUser);
+    const chatRooms = (await DataStore.query(ChatRoomUser))
+      .filter(
+        (chatRoomUser) => chatRoomUser.user.id === currentUser.attributes.sub
+      )
+      .map((chatRoomUser) => chatRoomUser.chatRoom);
+    setChatRooms(chatRooms);
+    console.log(chatRooms);
+  };
   useEffect(() => {
-    const fetchChatRooms = async () => {
-      const currentUser = await Auth.currentAuthenticatedUser();
-      const chatRooms = (await DataStore.query(ChatRoomUser))
-        .filter(
-          (chatRoomUser) => chatRoomUser.user.id === currentUser.attributes.sub
-        )
-        .map((chatRoomUser) => chatRoomUser.chatRoom);
-      setChatRooms(chatRooms);
-    };
     setChatRooms(chatRooms);
     fetchChatRooms();
     console.log(chatRooms);
   }, []);
-
+  const { setSelectedRoomId } = React.useContext(AppContext);
+  // const GetRommId=()=>{
+  //   console.log(chatRooms);
+  // }
   return (
     <div className="conversation-list">
       <Toolbar
@@ -57,9 +66,10 @@ export default function ConversationList(props) {
       />
       <ConversationSearch />
       {chatRooms.map((conversation) => (
-         <div key={conversation.id} onClick={()=>setSelectedRoomId(conversation.id)}>
-          <ConversationListItem key={conversation.id} data={conversation}/> 
-       </div>
+        <Link key={conversation.id} onClick={()=>setSelectedRoomId(conversation.id)}>
+          <ConversationListItem key={conversation.id} data={conversation}  />
+        </Link>
+      
       ))}
     </div>
   );
