@@ -36,16 +36,21 @@ export default function Message(props) {
       <div className={cx('message', isMe ? 'rightContainer' : 'leftContainer')}>
          
         <div className={cx('messImg')}>
-            <AmplifyS3Image imgKey={user?.imageUri || null}/>
+            <AmplifyS3Image imgKey={user?.imageUri || null}
+            style={{"--height": "50px", "--width": "50px"}}
+            />
         </div>
      
         <div className={cx('messright')}>
-        {props.data.image && (
+        
+          <div className={cx('messText')} style={{ color: isMe ? "white" : "black", backgroundColor: isMe ?  'rgb(55 74 216)' : 'gray'}}>
+          {props.data.image && (
         <div style={{ marginBottom: props.data.content ? 10 : 0 }}>
         
-            <div className={cx('imgSize')}>
+            <div>
           <AmplifyS3Image
              imgKey={props.data.image}
+             style={{"--height": "300px"}}
           />
           </div>
           {/* <div className={cx('imgSize')}>
@@ -57,7 +62,6 @@ export default function Message(props) {
           
           </div>
         )}
-          <div className={cx('messText')} style={{ color: isMe ? "white" : "black" }}>
             {props.data.content}
           </div>
         </div>

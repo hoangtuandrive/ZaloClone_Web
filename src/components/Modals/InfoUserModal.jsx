@@ -74,6 +74,7 @@ function InfoUserModal() {
                    <div  className="imguser_info">
                    <AmplifyS3Image
                      imgKey={currentUsers?.imageUri}
+                     style={{"--height": "50px", "--width": "50px"}}
                     //  style={{ width: 100, height: 100 }}
                    />
                  </div>

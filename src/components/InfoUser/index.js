@@ -64,6 +64,7 @@ export default function InfoUsers() {
               <AmplifyS3Image
             
             imgKey={currentUser?.imageUri}
+            style={{"--height": "50px", "--width": "50px"}}
             // imgKey={"63020dda-908f-4f60-9217-0a693fc367cf.png"}
             // alt="placeholder"
               />

@@ -59,7 +59,9 @@ export default function ConversationListItem(props) {
     return (
       <div className="conversation-list-item" >
         <div className="conversation-photo">
-          <AmplifyS3Image  imgKey={props.data.imageUri || user?.imageUri} alt="placeholder" />
+          <AmplifyS3Image  imgKey={props.data.imageUri || user?.imageUri} alt="placeholder" 
+           style={{"--height": "50px", "--width": "50px"}}
+          />
     
           </div>
         

@@ -51,7 +51,9 @@ export default function ContactListItem(props) {
       <div className="conversation-list-item" onClick={onPress}>
         {console.log(props.data)}
         <div className="conversation-photo">
-          <AmplifyS3Image  imgKey={props.data.imageUri || user?.imageUri} alt="placeholder" />
+          <AmplifyS3Image  imgKey={props.data.imageUri || user?.imageUri} alt="placeholder" 
+           style={{"--height": "50px", "--width": "50px"}}
+          />
     
           </div>
         <div className="conversation-info">

@@ -6,6 +6,7 @@
 }
 .messright{
     margin-right: 8px;
+    
 }
 .message.leftContainer{
     
@@ -44,13 +45,12 @@
     max-width: 500px;
 }
 
-amplify-s3-image {
-    --height: 50px;
-    --width: 50px;
-  }
-
-//   .imgSize {
-//     height: 100%;
-//     width: calc(100% + 80px);
-//     z-index: calc(3 / 2);
+// amplify-s3-image {
+//     --height: 50px;
+//     --width: 50px;
 //   }
+
+  .imgSize {
+    width: 500px;
+    height: 200px;
+  }
