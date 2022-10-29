@@ -7,10 +7,12 @@
 }
 
 .infouser-photo {
+
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    object-fit: cover;
+    object-fit: cover; 
+    overflow: hidden;
 }
 
 .icon-top {
@@ -35,4 +37,12 @@
 }
 
 
+  .btn-photo {
+    display: flex;
+    flex-direction: row; 
+  }
 
+  amplify-s3-image {
+    --height: 50px;
+    --width: 50px;
+  }

@@ -14,6 +14,7 @@
   height: 50px;
   border-radius: 50%;
   object-fit: cover;
+  overflow: hidden;
   margin-right: 10px;
 }
 
@@ -28,4 +29,9 @@
   font-size: 14px;
   color: #888;
   margin: 0;
+}
+
+amplify-s3-image {
+  --height: 50px;
+  --width: 50px;
 }
