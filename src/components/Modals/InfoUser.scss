@@ -77,9 +77,15 @@
     background-repeat: no-repeat;
     .imguser_info{
         border-width: 5px;
-        width: 50%;
-     
+        width: 50px;
+        object-fit: cover;
+        overflow: hidden;
         border-radius: 50%;
     }
 }
+
+// amplify-s3-image {
+//     --height: 80px;
+//     --width: inherit;
+//   }
 

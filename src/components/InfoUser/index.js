@@ -10,13 +10,13 @@ import {
 } from "@ant-design/icons";
 import "./InfoUser.css";
 import { AppContext } from "../../context/AppProvider";
-
+import { AmplifyS3Image }  from '@aws-amplify/ui-react/legacy';
 import { useNavigate } from "react-router-dom";
 import { Auth, DataStore } from "aws-amplify";
 import InfoUserModal from "../Modals/InfoUserModal";
 import { User } from "../../models";
 
-export default function InfoUser() {
+export default function InfoUsers() {
   const navigate = useNavigate();
   const [currentUser, setCurrentUsers] = useState();
   const { setIsModalOpen,setSelectedRoomId } = React.useContext(AppContext);
@@ -48,7 +48,7 @@ export default function InfoUser() {
       setSelectedRoomId(null);
       await Auth.signOut();
       navigate("/", { replace: true });
-    DataStore.clear();
+    // DataStore.clear();
       setIsModalOpen(false);
      
     } catch (error) {
@@ -58,13 +58,33 @@ export default function InfoUser() {
 
   return (
     <div className="infouser-item">
-      <Button className="btn-photo">
-        <img
+       <Button className="btn-photo">
+        {currentUser?.imageUri && (
+              <div className="infouser-photo">
+              <AmplifyS3Image
+            
+            imgKey={currentUser?.imageUri}
+            style={{"--height": "50px", "--width": "50px"}}
+            // imgKey={"63020dda-908f-4f60-9217-0a693fc367cf.png"}
+            // alt="placeholder"
+              />
+        </div> 
+        )}
+        {/* <div className="infouser-photo">
+              <AmplifyS3Image
+            
+            imgKey={currentUser?.imageUri}
+            // imgKey={"63020dda-908f-4f60-9217-0a693fc367cf.png"}
+            // alt="placeholder"
+              />
+        </div> */}
+        {/* <img
           className="infouser-photo"
           src={currentUser?.imageUri}
           alt="placeholder"
-        />
-      </Button>
+        /> */}
+       </Button>
+    
 
       <div className="icon-top">
         <Button onClick={handelChat}>
@@ -91,6 +111,7 @@ export default function InfoUser() {
           <LogoutOutlined style={{ fontSize: "30px", color: "white" }} />
         </Button>
       </div>
+      <InfoUserModal/>
     </div>
   );
 }

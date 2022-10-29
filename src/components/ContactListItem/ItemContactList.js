@@ -5,6 +5,7 @@ import './ContactListItem.css';
 import { User, ChatRoomUser ,ChatRoom } from '../../models';
 import { Auth,DataStore } from 'aws-amplify';
 import { useNavigate } from 'react-router-dom';
+import { AmplifyS3Image }  from '@aws-amplify/ui-react/legacy';
 export default function ContactListItem(props) {
   // useEffect(() => {
   //   shave('.conversation-snippet', 20);
@@ -49,7 +50,12 @@ export default function ContactListItem(props) {
     return (
       <div className="conversation-list-item" onClick={onPress}>
         {console.log(props.data)}
-        <img className="conversation-photo" src={imageUri} alt="placeholder" />
+        <div className="conversation-photo">
+          <AmplifyS3Image  imgKey={props.data.imageUri || user?.imageUri} alt="placeholder" 
+           style={{"--height": "50px", "--width": "50px"}}
+          />
+    
+          </div>
         <div className="conversation-info">
           <h1 className="conversation-title">{ name }</h1>
           <p className="conversation-snippet">{ text }</p>

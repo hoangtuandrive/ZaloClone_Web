@@ -5,7 +5,7 @@ import { Auth, DataStore } from "aws-amplify";
 import { Spin } from 'antd';
 // import moment from "moment";
 import { AppContext } from '../../context/AppProvider';
-
+import { AmplifyS3Image }  from '@aws-amplify/ui-react/legacy';
 export default function ConversationListItem(props) {
  
   const [user, setUser] = useState(null);
@@ -58,7 +58,13 @@ export default function ConversationListItem(props) {
 
     return (
       <div className="conversation-list-item" >
-        <img className="conversation-photo" src={props.data.imageUri || user?.imageUri} alt="placeholder" />
+        <div className="conversation-photo">
+          <AmplifyS3Image  imgKey={props.data.imageUri || user?.imageUri} alt="placeholder" 
+           style={{"--height": "50px", "--width": "50px"}}
+          />
+    
+          </div>
+        
         <div className="conversation-info">
           <h1 className="conversation-title">{props.data.name || user?.name  }</h1>
           <p className="conversation-snippet">{lastMessage?.content}</p>
