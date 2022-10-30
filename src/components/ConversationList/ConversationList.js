@@ -12,8 +12,6 @@ import { Link } from "react-router-dom";
 import { set } from "lodash";
 import { getGrid2UtilityClass } from "@mui/material";
 
-
-
 export default function ConversationList(props) {
   const { setIsModalOpen } = React.useContext(AppContext);
   //const [users, setUsers] = useState([]);
@@ -23,21 +21,23 @@ export default function ConversationList(props) {
 
   const [chatRooms, setChatRooms] = useState([]);
   const fetchChatRooms = async () => {
-    const currentUser = await Auth.currentAuthenticatedUser();  
-    
+    const currentUser = await Auth.currentAuthenticatedUser();
+
     console.log(currentUser);
     const chatRooms = (await DataStore.query(ChatRoomUser))
       .filter(
-        (chatRoomUser) => chatRoomUser.user.id === currentUser.attributes.sub
+        (chatRoomUser) =>
+          chatRoomUser.user.id === currentUser.attributes.sub &&
+          chatRoomUser.chatRoom.name !== "Deleted"
       )
       .map((chatRoomUser) => chatRoomUser.chatRoom);
     setChatRooms(chatRooms);
-    console.log(chatRooms);
+    // console.log(chatRooms);
   };
   useEffect(() => {
     setChatRooms(chatRooms);
     fetchChatRooms();
-    console.log(chatRooms);
+    // console.log(chatRooms);
   }, []);
   const { setSelectedRoomId } = React.useContext(AppContext);
   // const GetRommId=()=>{
@@ -65,10 +65,12 @@ export default function ConversationList(props) {
       />
       <ConversationSearch />
       {chatRooms.map((conversation) => (
-        <Link key={conversation.id} onClick={()=>setSelectedRoomId(conversation.id)}>
-          <ConversationListItem key={conversation.id} data={conversation}  />
+        <Link
+          key={conversation.id}
+          onClick={() => setSelectedRoomId(conversation.id)}
+        >
+          <ConversationListItem key={conversation.id} data={conversation} />
         </Link>
-      
       ))}
     </div>
   );

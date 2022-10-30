@@ -10,8 +10,8 @@ import "./ContactList.css";
 import { ChatRoom, User, ChatRoomUser } from "../../models";
 import { Auth, DataStore } from "aws-amplify";
 import ContactListItem from "../ContactListItem/ItemContactList";
-import { Button, Image,Alert } from "antd";
-import {UsergroupAddOutlined} from '@ant-design/icons';
+import { Button, Image, Alert } from "antd";
+import { UsergroupAddOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 
 export default function ContactList(props) {
@@ -28,7 +28,7 @@ export default function ContactList(props) {
   useEffect(() => {
     const fetchUserList = async () => {
       const GetUser = await DataStore.query(User);
-      console.log(GetUser);
+      // console.log(GetUser);
       setConversations(GetUser);
     };
     fetchUserList();
@@ -74,10 +74,7 @@ export default function ContactList(props) {
     navigate("/chat", { replace: true });
   };
 
-
-
   const isUserSelected = (user) => {
- 
     return selectedUsers.some((selectedUser) => selectedUser.id === user.id);
   };
   const onUserPress = async (user) => {
@@ -120,21 +117,26 @@ export default function ContactList(props) {
         ]}
       />
       <ConversationSearch />
-     
-      <Button className="btn_newGroup" onClick={() => setIsNewGroup(!isNewGroup)}>
-        <UsergroupAddOutlined name="group" size={50} color="#4f4f4f"/>
+
+      <Button
+        className="btn_newGroup"
+        onClick={() => setIsNewGroup(!isNewGroup)}
+      >
+        <UsergroupAddOutlined name="group" size={50} color="#4f4f4f" />
         New Gruop
-        </Button>
+      </Button>
       {conversations.map((conversation) => (
-        <ContactListItem key={conversation.id} data={conversation}
-        user={conversation}
-        onClick={() => onUserPress(conversation)}
-        isSelected={isNewGroup ? isUserSelected(conversation) : undefined}
+        <ContactListItem
+          key={conversation.id}
+          data={conversation}
+          user={conversation}
+          onClick={() => onUserPress(conversation)}
+          isSelected={isNewGroup ? isUserSelected(conversation) : undefined}
         />
       ))}
       {isNewGroup && (
-        <Button className="btn_Save" onClick={saveGroup} >
-            Save group ({selectedUsers.length})        
+        <Button className="btn_Save" onClick={saveGroup}>
+          Save group ({selectedUsers.length})
         </Button>
       )}
     </div>

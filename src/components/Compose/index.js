@@ -22,7 +22,7 @@ export default function Compose(props) {
 
   // console.log("alo", props.data.id);
 
-  console.log(props.chatRoom);
+  // console.log(props.chatRoom);
   const saveNewMessage = async () => {
     // get all the users of this chatroom
     const user = await Auth.currentAuthenticatedUser();
