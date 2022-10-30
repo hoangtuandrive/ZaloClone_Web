@@ -5,7 +5,7 @@ import Slidebar from "../../components/Slidebar";
 import "./Messenger.css";
 import InfoUserModal from "../../components/Modals/InfoUserModal";
 
-export default function Messenger(props) {
+ export default function Messenger(props) {
   return (
     <div className="messenger">
       <div className="slidebar">

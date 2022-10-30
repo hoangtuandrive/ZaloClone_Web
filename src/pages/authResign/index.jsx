@@ -4,7 +4,7 @@ import "./index.scss";
 import { Button } from "antd";
 import IMAGE_ACCOUNT_PAGE from "../../assets/images/accountbg.png";
 
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import CustomInput from "../../components/Custom/CustomInput";
 import { Controller, useForm } from "react-hook-form";
 
@@ -12,25 +12,33 @@ import { Amplify, Auth } from "aws-amplify";
 import awsconfig from "../../aws-exports";
 
 import { AppContext } from "../../context/AppProvider";
+import Password from "antd/lib/input/Password";
 
 Amplify.configure(awsconfig);
 
 function AuthResign() {
   // const route = useRoute();
   //Lấy UserName từ Context;
-  const { userContext } = React.useContext(AppContext);
+  const { userContext,PasswordContext} = React.useContext(AppContext);
 
   const navigate = useNavigate();
   const { control, handleSubmit, watch } = useForm({
-    defaultValues: { username: userContext },
+    defaultValues: { username: userContext,
+                password:PasswordContext
+    },
   });
 
   const onConfirmPressed = async (data) => {
     try {
       await Auth.confirmSignUp(data.username, data.code);
-      navigate("/login", { replace: true });
-
       console.log("Thanh cong");
+    } catch (error) {
+      console.log("error confirming sign up", error);
+    }
+    try {
+      const response = await Auth.signIn(data.username, data.password);
+      console.log("Login log", response);
+      navigate("/chat", { replace: true });
     } catch (error) {
       console.log("error confirming sign up", error);
     }

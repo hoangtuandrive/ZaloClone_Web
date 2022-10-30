@@ -1,9 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import './ContactListItem.css';
+import styles from './ContactListItem.modulo.scss';
+import classNames from 'classnames/bind';
 import { User, ChatRoomUser ,ChatRoom } from '../../models';
 import { Auth,DataStore } from 'aws-amplify';
 import { useNavigate } from 'react-router-dom';
 import { AmplifyS3Image }  from '@aws-amplify/ui-react/legacy';
+const cx = classNames.bind(styles);
 export default function ContactListItem(props) {
   // useEffect(() => {
   //   shave('.conversation-snippet', 20);
@@ -12,7 +14,19 @@ export default function ContactListItem(props) {
    const [user,setUser] = useState(props.data);
     const navigate = useNavigate();
     const { imageUri, name, text } = props.data;
-
+    const [Css,setCss] = useState(true);
+    useEffect(() => {
+      if(props.isSelected===false){
+        setCss(false);
+      }
+      else if(props.isSelected===true)
+      {
+        setCss(false);
+      }
+      else{
+        setCss(true);
+      }
+    }, [props.isSelected]);
   // const onPress = async()=>{
   //   console.log(user);
   //   const authUser = await Auth.currentAuthenticatedUser();
@@ -46,8 +60,11 @@ export default function ContactListItem(props) {
     //   // navigation.navigate("ChatRoom", { id: newChatRoom.id });
     //   navigate("/chat",{replace: true});
     // };
+    function Log(){
+      console.log("Co");
+    }
     return (
-      <div className="conversation-list-item" onClick={props.onClick}>
+      <div className={cx( 'conversation-list-item', Css? 'conversation-list-item-b' : 'conversation-list-item-a')} onClick={props.onClick}>
         {console.log(props)}
         <div className="conversation-photo">
           <AmplifyS3Image  imgKey={props.data.imageUri || user?.imageUri} alt="placeholder" 
@@ -65,7 +82,7 @@ export default function ContactListItem(props) {
             type="checkbox"         
             checked={props.isSelected}
             className="chk_Chon"
-         
+            onChange={Log}
         />
         )
         }   

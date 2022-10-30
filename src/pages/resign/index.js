@@ -26,7 +26,8 @@ function Resign() {
   const pwd = watch("password");
 
   const userContextT = watch("username");
-  const { setuserContext } = useContext(AppContext);
+  const passwordContextT=watch("password");
+  const { setuserContext,setPasswordContext } = useContext(AppContext);
 
   //Lấy uerName
   //const userNameContext= {userContext} = useContext(AppContext);
@@ -41,6 +42,7 @@ function Resign() {
         attributes: { email, name, preferred_username: username },
       });
       setuserContext(userContextT);
+      setPasswordContext(passwordContextT);
       navigate("/authResign", { replace: true });
 
       console.log("Thanh cong");
