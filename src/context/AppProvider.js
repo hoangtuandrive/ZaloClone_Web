@@ -5,15 +5,15 @@ function AppProvider({ children }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAddFriendVisible, setisAddFriendVisible] = useState(false);
   const [userContext, setuserContext] = useState("");
-  const [selectedRoomId,setSelectedRoomId]=useState("");
-  const [isModalOpenGroup, setIsModalOpenGroup]=useState(false);
-  
+  const [selectedRoomId, setSelectedRoomId] = useState("");
+  const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
+
   const clearState = () => {
     setIsModalOpen(false);
     setisAddFriendVisible(false);
     setuserContext("");
     setSelectedRoomId("");
-    setIsModalOpenGroup("");
+    setIsEmojiPickerOpen(false);
   };
   return (
     <AppContext.Provider
@@ -27,8 +27,8 @@ function AppProvider({ children }) {
         setuserContext,
         selectedRoomId,
         setSelectedRoomId,
-        isModalOpenGroup, 
-        setIsModalOpenGroup
+        isEmojiPickerOpen,
+        setIsEmojiPickerOpen,
       }}
     >
       {children}
