@@ -40,11 +40,10 @@ export default function Compose(props) {
 
 
   const onPress = () => {
-      saveNewMessage();
-      
-  };
+      saveNewMessage();      
 
-
+    };
+    
   return (
     <div className="compose">
       <div className="left-button"> {props.leftItems} </div>
