@@ -11,6 +11,8 @@ import { AppContext } from "../../context/AppProvider";
 import { Alert } from "antd";
 import {ChatRoom,Message as MessageModel,ChatRoomUser} from '../../models'
 import { DataStore, SortDirection ,Auth} from "aws-amplify";
+import { InfoCircleTwoTone } from "@ant-design/icons"
+import InfoGroup from "../Modals/InfoGroup";
 
 const MY_USER_ID = "apple";
 
@@ -20,7 +22,7 @@ const [messages, setMessages] = useState([]);
   const [chatRoom, setChatRoom] = useState([]);   
   const [allUsers, setAllUsers] = useState([]);
   const [user, setUser] = useState(null);
-  const { selectedRoomId } =useContext(AppContext);
+  const { selectedRoomId,setIsModalOpenGroup } =useContext(AppContext);
 
   const fetchUsers = async () => {
     const fetchedUsers = (await DataStore.query(ChatRoomUser))
@@ -36,8 +38,10 @@ const [messages, setMessages] = useState([]);
   };
 
   useEffect(() => {
+   
     fetchChatRoom();
     fetchUsers();
+  
   }, [selectedRoomId]);
 
   useEffect(() => {
@@ -97,19 +101,34 @@ const [messages, setMessages] = useState([]);
     );
     console.log(fetchedMessages);
     setMessages(fetchedMessages);
+    
   };
-
-  console.log(messages);
-  console.log(chatRoom);
+  console.log(selectedRoomId);
+  // console.log(messages);
+  // console.log(chatRoom);
 
     return ( 
         <div className="message-list">
-            <Toolbar
-            title={user?.name}
+            <Toolbar           
+            title={chatRoom?.name || user?.name}
             rightItems={[
-              <ToolbarButton
+              // <ToolbarButton
+              //   key="info"
+              //   icon="ion-ios-information-circle-outline"
+
+              // />,
+              <InfoCircleTwoTone
                 key="info"
-                icon="ion-ios-information-circle-outline"
+                onClick={()=>{setIsModalOpenGroup(true)}}
+                style={{
+                  fontSize: 24,
+                  alignItems: 'center',
+                 
+                  display: 'flex',
+                  marginLeft: 11,
+
+                }}
+                
               />,
               <ToolbarButton key="video" icon="ion-ios-videocam" />,
               <ToolbarButton key="phone" icon="ion-ios-call" />,
@@ -134,7 +153,8 @@ const [messages, setMessages] = useState([]);
             ]}
             rightItems={[<ToolbarButton key="photo" icon="ion-ios-send" />]}
           >
-          </Compose>          
+          </Compose>    
+          <InfoGroup />      
           </div>
      );
 }
