@@ -3,16 +3,18 @@ import styles from './Message.modulo.scss';
 import classNames from 'classnames/bind';
 import {User} from '../../models'
 import { Spin } from 'antd';
-import { DataStore, Auth } from "aws-amplify";
+import { DataStore, Auth, Storage } from "aws-amplify";
 import { AmplifyS3Image }  from '@aws-amplify/ui-react/legacy';
-import useWindowDimensions from '../hooks/useWindowDimensions ';
-import { AspectRatio } from 'react-aspect-ratio';
+
+
+import ReactAudioPlayer from "react-audio-player";
+import { AudioPlayer } from '../AudioPlayer/AudioPlayer';
 const cx = classNames.bind(styles);
 
 export default function Message(props) {
   const [user, setUser] = useState();
   const [isMe, setIsMe] = useState(false);
-  const { width } = useWindowDimensions();
+  const [soundURI, setSoundURI] = useState(null);
   console.log(props.data);
   useEffect(() => {
     DataStore.query(User, props.data.userID).then(setUser);
@@ -29,6 +31,15 @@ export default function Message(props) {
     checkIfMe();
   }, [user]);
   
+  useEffect(() => {
+    if (props.data.audio) {
+      Storage.get(props.data.audio).then(setSoundURI);
+    }
+  }, [props.data]);
+
+  console.log(soundURI);
+  
+
   if (!user) {
     return <Spin></Spin>;
   }
@@ -62,7 +73,13 @@ export default function Message(props) {
           
           </div>
         )}
+
+       {soundURI && (
+             <AudioPlayer soundURI={soundURI}/>
+       )}  
+    
             {props.data.content}
+      
           </div>
         </div>
       </div>
