@@ -126,7 +126,7 @@ const Xoa= ()=>{
         centered
       >
         <div className={cx("warap")}>
-          <div className={cx("content")}>
+          <div className={cx("contentG scrollG")}>
             {allUsers.map((item) => { 
               const isAdmin = chatRoom?.Admin?.id === item.id;
               return (
