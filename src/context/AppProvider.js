@@ -7,6 +7,7 @@ function AppProvider({ children }) {
   const [userContext, setuserContext] = useState("");
   const [selectedRoomId,setSelectedRoomId]=useState("");
   const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);  
+  const [selectedMessageId,setSelectedMessageId]=useState("");
   
   const clearState = () => {
     setIsModalOpen(false);
@@ -14,6 +15,7 @@ function AppProvider({ children }) {
     setuserContext("");
     setSelectedRoomId("");
     setIsEmojiPickerOpen(false)
+    setSelectedMessageId("");
   };
   return (
     <AppContext.Provider
@@ -29,6 +31,8 @@ function AppProvider({ children }) {
         setSelectedRoomId,
         isEmojiPickerOpen,
         setIsEmojiPickerOpen,
+        selectedMessageId,
+        setSelectedMessageId
       }}
     >
       {children}

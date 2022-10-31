@@ -1,4 +1,4 @@
-import React ,{useState,useEffect}from 'react';
+import React ,{useState,useEffect, useContext}from 'react';
 import styles from './Message.modulo.scss';
 import classNames from 'classnames/bind';
 import {User} from '../../models'
@@ -7,17 +7,21 @@ import { DataStore, Auth, Storage } from "aws-amplify";
 import { AmplifyS3Image }  from '@aws-amplify/ui-react/legacy';
 
 
-import ReactAudioPlayer from "react-audio-player";
+// import ReactAudioPlayer from "react-audio-player";
 import { AudioPlayer } from '../AudioPlayer/AudioPlayer';
+import { AppContext } from '../../context/AppProvider';
 const cx = classNames.bind(styles);
 
 export default function Message(props) {
   const [user, setUser] = useState();
   const [isMe, setIsMe] = useState(false);
   const [soundURI, setSoundURI] = useState(null);
+  const [messages, setMessages] = useState(props.data);
+  const { setSelectedMessageId } = useContext(AppContext);
   console.log(props.data);
   useEffect(() => {
     DataStore.query(User, props.data.userID).then(setUser);
+    setSelectedMessageId(messages.id);
   }, []);
 
   useEffect(() => {
@@ -75,7 +79,9 @@ export default function Message(props) {
         )}
 
        {soundURI && (
-             <AudioPlayer soundURI={soundURI}/>
+            //  <AudioPlayer soundURI={soundURI}/>
+              <AudioPlayer messages={messages}>
+              </AudioPlayer>    
        )}  
     
             {props.data.content}
