@@ -1,16 +1,16 @@
-import React, { useContext, useEffect } from "react";
-import { Modal } from "antd";
+import React, { useContext, useEffect ,useState } from "react";
+import { Modal,Alert } from "antd";
 import { AppContext } from "../../context/AppProvider";
 import styles from "./GroupInfo.modulo.scss";
 import { Auth, DataStore } from "aws-amplify";
-import { useState } from "react";
 import classNames from "classnames/bind";
 import { ChatRoom, User, ChatRoomUser } from "../../../src/models";
 import { AmplifyS3Image } from "@aws-amplify/ui-react/legacy";
-import ContactListItem from "../ContactListItem/ItemContactList";
-import { Button } from "antd";
+
+import { Button,Popconfirm } from "antd";
 import { UserDeleteOutlined, UserSwitchOutlined } from "@ant-design/icons";
-import { fontSize } from "@mui/system";
+import { Content } from "antd/lib/layout/layout";
+
 const cx = classNames.bind(styles);
 function InfoGroup() {
   const { isModalOpenGroup, setIsModalOpenGroup, selectedRoomId } =
@@ -21,7 +21,7 @@ function InfoGroup() {
   useEffect(() => {
     fetchUsers();
     fetchChatRoom();
-  }, []);
+  }, [selectedRoomId]);
 
   const handleOk = () => {
     setIsModalOpenGroup(false);
@@ -52,6 +52,69 @@ function InfoGroup() {
     }
     console.log(chatRoom);
   };
+ 
+  const confirmDelete = async (user) => {
+  
+    // check if Auth user is admin of this group
+    const authData = await Auth.currentAuthenticatedUser();
+    if (chatRoom?.Admin?.id !== authData.attributes.sub) {
+      alert("You are not the admin of this group");
+       return;
+    }
+    else if (user.id === chatRoom?.Admin?.id) {
+      alert("You are the admin, you cannot delete yourself");
+      console.log(chatRoom.Admin.id);
+       return;
+    } 
+    else{
+      
+      let result = window.confirm('Are you sure you want to delete?');
+      if(result){
+        deleteUser(user);
+      }
+      else{
+        return;
+      }
+      
+    }
+    // alert(            
+    //     "Confirm delete",
+    //    `Are you sure you want to delete ${user.name} from the group`, 
+    //   [
+    //     {
+    //       title: "Delete",
+    //       onclick: () => deleteUser(user),
+    //       style: "destructive",
+    //     },
+    //     {
+    //       text: "Cancel",
+    //     },
+    //   ]
+    // );
+  };
+  const deleteUser = async (user) => {
+    const chatRoomUsersToDelete = await (
+      await DataStore.query(ChatRoomUser)
+    ).filter(
+      (cru) => cru.chatRoom.id === chatRoom?.id && cru.user.id === user.id
+    );
+
+    console.log(chatRoomUsersToDelete);
+
+    if (chatRoomUsersToDelete.length > 0) {
+      await DataStore.delete(chatRoomUsersToDelete[0]);
+
+      setAllUsers(allUsers.filter((u) => u.id !== user.id));
+    }
+  };
+  // console.log(chatRoom);
+const Xoa= ()=>{
+  const modal= Modal.info();
+  modal.update({
+    title:'A',  
+    
+  })
+}
   return (
     <div className="container">
       <Modal
@@ -64,7 +127,7 @@ function InfoGroup() {
       >
         <div className={cx("warap")}>
           <div className={cx("content")}>
-            {allUsers.map((item) => {
+            {allUsers.map((item) => { 
               const isAdmin = chatRoom?.Admin?.id === item.id;
               return (
                 <div className={cx("group-conversation-list-item")}>
@@ -80,20 +143,23 @@ function InfoGroup() {
                       {item.name}
                       {isAdmin && <span> (Admin)</span>}
                     </h1>
-                    <p className={cx("conversation-snippet")}>{item.text}</p>
+                  
                   </div>
                   <div>
                     {/* <UserSwitchOutlined
                       style={{ fontSize: 28, marginLeft: 20, marginRight: 10 }}
                     /> */}
-                    <UserDeleteOutlined style={{ fontSize: 28 }} />
+                  
+                      <UserDeleteOutlined style={{ fontSize: 28 }} onClick={()=>{confirmDelete(item)}}  />
+                 
+                   
                   </div>
                 </div>
               );
             })}
           </div>
           <div className={cx("button")}>
-            <Button type="primary">Change Group Name</Button>
+            <Button type="primary" onClick={Xoa}>Change Group Name</Button>
             <Button
               type="primary"
               style={{ marginLeft: 20, backgroundColor: "red" }}

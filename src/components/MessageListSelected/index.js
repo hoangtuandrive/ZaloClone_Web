@@ -13,6 +13,7 @@ import { ChatRoom, Message as MessageModel, ChatRoomUser } from "../../models";
 import { DataStore, SortDirection, Auth } from "aws-amplify";
 import { InfoCircleTwoTone } from "@ant-design/icons";
 import InfoGroup from "../Modals/InfoGroup";
+import EmojiPicker from "emoji-picker-react";
 
 const MY_USER_ID = "apple";
 
@@ -22,7 +23,8 @@ function MessageListSelected() {
   const [allUsers, setAllUsers] = useState([]);
   const [user, setUser] = useState(null);
   const [render, setRender] = useState(false);
-  const { selectedRoomId, setIsModalOpenGroup } = useContext(AppContext);
+  const { selectedRoomId, setIsModalOpenGroup , isEmojiPickerOpen } = useContext(AppContext);
+  const [messageEmoji, setMessageEmoji] = useState("");
   const bottomRef = useRef(null);
 
   const fetchUsers = async () => {
@@ -111,7 +113,10 @@ function MessageListSelected() {
   console.log(selectedRoomId);
   // console.log(messages);
   // console.log(chatRoom);
-
+  const pickEmoji = (emojiData: EmojiClickData, event: MouseEvent) => {
+    setMessageEmoji(currentMessage => currentMessage + emojiData.emoji)
+    
+  } 
   return (
     <div className="message-list">
       <Toolbar
@@ -147,14 +152,25 @@ function MessageListSelected() {
 
       <Compose
         chatRoom={chatRoom}
+        messageEmoji={messageEmoji}
         leftItems={[
           <ToolbarButton key="photo" icon="ion-ios-camera" />,
           <ToolbarButton key="image" icon="ion-ios-image" />,
           <ToolbarButton key="audio" icon="ion-ios-mic" />,
           <ToolbarButton key="emoji" icon="ion-ios-happy" />,
+       
         ]}
         rightItems={[<ToolbarButton key="photo" icon="ion-ios-send" />]}
       ></Compose>
+      { isEmojiPickerOpen && (
+         <div style={{marginBottom: 120}}>
+                  <EmojiPicker 
+     autoFocusSearch={false}
+     width="30%"
+     onEmojiClick={pickEmoji}
+      />
+          </div>      
+    )}        
       <InfoGroup />
     </div>
   );
