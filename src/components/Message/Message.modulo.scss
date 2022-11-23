@@ -38,11 +38,13 @@
 }
 .messText {
     padding: 10px;
+    padding-inline: 20px;
     border-radius: 20px;
     background-color: rgb(55 74 216);
     color: black;
     word-wrap: break-word;
     max-width: 500px;
+    margin-left: 10px;
 }
 
 // amplify-s3-image {

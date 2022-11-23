@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import Compose from "../Compose";
 import Toolbar from "../Toolbar";
 import ToolbarButton from "../ToolbarButton";
@@ -9,20 +9,23 @@ import chatData from "../../assets/dummy-data/Chats.js";
 import "./MessageList.css";
 import { AppContext } from "../../context/AppProvider";
 import { Alert } from "antd";
-import {ChatRoom,Message as MessageModel,ChatRoomUser} from '../../models'
-import { DataStore, SortDirection ,Auth} from "aws-amplify";
+import { ChatRoom, Message as MessageModel, ChatRoomUser } from "../../models";
+import { DataStore, SortDirection, Auth } from "aws-amplify";
+import { InfoCircleTwoTone } from "@ant-design/icons";
+import InfoGroup from "../Modals/InfoGroup";
 import EmojiPicker from "emoji-picker-react";
 
 const MY_USER_ID = "apple";
 
-
 function MessageListSelected() {
-const [messages, setMessages] = useState([]);
-  const [chatRoom, setChatRoom] = useState([]);   
+  const [messages, setMessages] = useState([]);
+  const [chatRoom, setChatRoom] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
   const [user, setUser] = useState(null);
+  const [render, setRender] = useState(false);
+  const { selectedRoomId, setIsModalOpenGroup , isEmojiPickerOpen } = useContext(AppContext);
   const [messageEmoji, setMessageEmoji] = useState("");
-  const { selectedRoomId, isEmojiPickerOpen } = useContext(AppContext);
+  const bottomRef = useRef(null);
 
   const fetchUsers = async () => {
     const fetchedUsers = (await DataStore.query(ChatRoomUser))
@@ -61,23 +64,30 @@ const [messages, setMessages] = useState([]);
   }, []);
   useEffect(() => {
     const subscription = DataStore.observe(MessageModel).subscribe((msg) => {
-      console.log(msg.model, msg.opType, msg.element);  
+      console.log(msg.model, msg.opType, msg.element);
       if (msg.model === MessageModel && msg.opType === "INSERT") {
-        
         //apend new message to existing messages
         setMessages((existingMessages) => [msg.element, ...existingMessages]);
       }
     });
     return () => subscription.unsubscribe();
   }, []);
-  
- const fetchChatRoom = async () => {
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, []);
+
+  const fetchChatRoom = async () => {
     if (!selectedRoomId) {
       console.warn("No chatroom id received");
       return;
     }
     const chatRooms = await DataStore.query(ChatRoom, selectedRoomId);
-   
+
     if (!chatRooms) {
       console.error("No chatroom found with this id");
     } else {
@@ -100,65 +110,70 @@ const [messages, setMessages] = useState([]);
     console.log(fetchedMessages);
     setMessages(fetchedMessages);
   };
-
-  console.log(messages);
-  console.log(chatRoom);
-
+  console.log(selectedRoomId);
+  // console.log(messages);
+  // console.log(chatRoom);
   const pickEmoji = (emojiData: EmojiClickData, event: MouseEvent) => {
     setMessageEmoji(currentMessage => currentMessage + emojiData.emoji)
     
   } 
+  return (
+    <div className="message-list">
+      <Toolbar
+        title={chatRoom?.name || user?.name}
+        rightItems={[
+          // <ToolbarButton
+          //   key="info"
+          //   icon="ion-ios-information-circle-outline"
 
-  console.log("pickemoji", messageEmoji);
-    return ( 
-        <div className="message-list">
-            <Toolbar
-            title={user?.name}
-            rightItems={[
-              <ToolbarButton
-                key="info"
-                icon="ion-ios-information-circle-outline"
-              />,
-              <ToolbarButton key="video" icon="ion-ios-videocam" />,
-              <ToolbarButton key="phone" icon="ion-ios-call" />,
-            ]}
-          />
-          <div className="message-list-container"> {messages.map((messItem)=>(
-            <Message key={messItem.id} data={messItem}>
+          // />,
+          <InfoCircleTwoTone
+            key="info"
+            onClick={() => {
+              setIsModalOpenGroup(true);
+            }}
+            style={{
+              fontSize: 24,
+              alignItems: "center",
 
-            </Message>
-          ))
-           } </div>
-           
-      
+              display: "flex",
+              marginLeft: 11,
+            }}
+          />,
+          <ToolbarButton key="video" icon="ion-ios-videocam" />,
+          <ToolbarButton key="phone" icon="ion-ios-call" />,
+        ]}
+      />
+      <div className="message-list-container" ref={bottomRef}>
+        {messages.map((messItem) => (
+          <Message key={messItem.id} data={messItem}></Message>
+        ))}
+      </div>
 
-          <Compose 
-            chatRoom={chatRoom}
-            leftItems={[
-              <ToolbarButton key="photo" icon="ion-ios-camera" />,
-              <ToolbarButton key="image" icon="ion-ios-image" />,
-              <ToolbarButton key="audio" icon="ion-ios-mic" />,
-              <ToolbarButton key="emoji" icon="ion-ios-happy" />,
-            ]}
-            
-            rightItems={[<ToolbarButton key="photo" icon="ion-ios-send" />]}
-            messageEmoji={messageEmoji}
-          >
-          </Compose>  
-          { isEmojiPickerOpen && (
+      <Compose
+        chatRoom={chatRoom}
+        messageEmoji={messageEmoji}
+        leftItems={[
+          <ToolbarButton key="photo" icon="ion-ios-camera" />,
+          <ToolbarButton key="image" icon="ion-ios-image" />,
+          <ToolbarButton key="audio" icon="ion-ios-mic" />,
+          <ToolbarButton key="emoji" icon="ion-ios-happy" />,
+       
+        ]}
+        rightItems={[<ToolbarButton key="photo" icon="ion-ios-send" />]}
+      ></Compose>
+      { isEmojiPickerOpen && (
          <div style={{marginBottom: 120}}>
                   <EmojiPicker 
      autoFocusSearch={false}
      width="30%"
      onEmojiClick={pickEmoji}
       />
-          </div>    
-           
-  
-    
+          </div>      
     )}        
-          </div>
-     );
+      <InfoGroup />
+    </div>
+  );
 }
 
 export default MessageListSelected;

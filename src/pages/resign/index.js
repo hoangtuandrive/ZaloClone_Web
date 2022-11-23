@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button, Col, Row, Typography } from "antd";
 
@@ -7,9 +7,9 @@ import "./resign.scss";
 
 import { useForm } from "react-hook-form";
 import CustomInput from "../../components/Custom/CustomInput";
-import { Amplify, Auth } from "aws-amplify";
+import { Amplify, Auth, DataStore } from "aws-amplify";
 import awsconfig from "../../aws-exports";
-
+import { User } from "../../models";
 import { AppContext } from "../../context/AppProvider";
 
 Amplify.configure(awsconfig);
@@ -19,28 +19,55 @@ function Resign() {
   const EMAIL_REGEX =
     /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
+  const [listEmail, setListEmail] = useState([]);
   const navigate = useNavigate();
 
-  const { control, handleSubmit, watch, value } = useForm();
+  const { control, handleSubmit, watch, value, onChange } = useForm();
 
   const pwd = watch("password");
 
   const userContextT = watch("username");
-  const { setuserContext } = useContext(AppContext);
+  const { setuserContext, setPasswordContext } = useContext(AppContext);
+  const [email, setEmail] = useState("");
+  const [emailErr, setEmailErr] = useState(false);
+
+//Get all email
+  useEffect(() => {
+    const fetchUserList = async () => {
+      const GetUser = await DataStore.query(User);
+      console.log(GetUser);
+      setListEmail(GetUser);
+    };
+    fetchUserList();
+    for (var i=0; i < listEmail.length; i++) {
+        console.log(listEmail[i].email);
+      if (listEmail[i].email === userContextT) {
+        setEmailErr(true);
+        return;
+      } else {
+        setEmailErr(false);
+      }
+  } 
+
+  }, [userContextT]);
+
 
   //Lấy uerName
   //const userNameContext= {userContext} = useContext(AppContext);
 
   const onSignUpPressed = async (data) => {
     const { username, password, email, name } = data;
-
     try {
+      
       const user = await Auth.signUp({
         username,
         password,
         attributes: { email, name, preferred_username: username },
       });
       setuserContext(userContextT);
+      setPasswordContext(pwd);
+      
+      console.log("test 17-11-2022", pwd);
       navigate("/authResign", { replace: true });
 
       console.log("Thanh cong");
@@ -48,11 +75,53 @@ function Resign() {
       console.log("error signing in", error);
     }
   };
+
+
+    // const usernameAvailable = async (username) => {
+    //   // adapted from @herri16's solution: https://github.com/aws-amplify/amplify-js/issues/1067#issuecomment-436492775
+    //   try {
+    //     const res = await Auth.confirmSignUp(username, '000000', {
+    //       // If set to False, the API will throw an AliasExistsException error if the phone number/email used already exists as an alias with a different user
+    //       forceAliasCreation: false
+    //     });
+    //     // this should always throw an error of some kind, but if for some reason this succeeds then the user probably exists.
+    //     return false;
+    //   } catch (err) {
+    //     switch ( err.code ) {
+    //       case 'UserNotFoundException':
+    //           return true;
+    //       case 'NotAuthorizedException':
+    //           return false;
+    //       case 'AliasExistsException':
+    //           // Email alias already exists
+    //           return false;
+    //       case 'CodeMismatchException':
+    //           return false;
+    //       case 'ExpiredCodeException':
+    //           return false;
+    //       default:
+    //           return false;
+    //     }
+    //   }
+    // }
+  
+
+
+  // const available = await usernameAvailable("thuan22022001@gmail.com");
+  // console.log(`user ${available ? 'available' : 'not available'}`);   
+
+
+
+  
+
+
+
   return (
     <div className="account-common-page-resign">
       <div className="account-wrapper-resign">
         <div className="account_left-resign">
           <img src={IMAGE_ACCOUNT_PAGE} alt="zelo_login" />
+
         </div>
 
         <div className="account_right-resign">
@@ -83,6 +152,8 @@ function Resign() {
                 <CustomInput
                   name="username"
                   control={control}
+                  value={email}
+             
                   placeholder="Email"
                   rules={{
                     required: "Username is required",
@@ -96,6 +167,10 @@ function Resign() {
                     },
                   }}
                 />
+                    {emailErr && 
+                    <span style={{ color: "red", alignSelf: "stretch"}}>
+                          Your email is exists
+                    </span> }
               </Col>
 
               <Col span={18}>
@@ -127,6 +202,7 @@ function Resign() {
                       value === pwd || "Password do not match",
                   }}
                 />
+                      
               </Col>
 
               <Col span={18}>
@@ -152,12 +228,14 @@ function Resign() {
             <Button className="btnLoginFacebook" htmlType="submit" block>
               {" "}
               Continue with Facebook!
+
             </Button>
           </Col>{" "}
           <br />
           <Col span={18}>
             <Button className="btnLoginGoogle" htmlType="submit" block>
               {" "}
+ 
               Continue with Google!
             </Button>
           </Col>
