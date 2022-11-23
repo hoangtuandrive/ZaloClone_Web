@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styles from "./Message.modulo.scss";
 import classNames from "classnames/bind";
 import { User } from "../../models";
 import { Spin } from "antd";
 import { DataStore, Auth, Storage } from "aws-amplify";
 import { AmplifyS3Image } from "@aws-amplify/ui-react/legacy";
-
+import { AppContext } from "../../context/AppProvider";
 import ReactAudioPlayer from "react-audio-player";
 import { AudioPlayer } from "../AudioPlayer/AudioPlayer";
 const cx = classNames.bind(styles);

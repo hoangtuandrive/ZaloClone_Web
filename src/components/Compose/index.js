@@ -9,7 +9,7 @@ import EmojiPicker, { EmojiStyle } from "emoji-picker-react";
 import { FrownTwoTone } from "@ant-design/icons";
 import Emoji from "../Emoji/Emoji";
 export default function Compose(props) {
-  // console.log("Right", props);
+  console.log("Right", props);
   console.log("chatroom", { props });
   const [message, setMessage] = useState("");
   useEffect(() => {
