@@ -13,15 +13,16 @@ import { Content } from "antd/lib/layout/layout";
 
 const cx = classNames.bind(styles);
 function InfoGroup() {
-  const { isModalOpenGroup, setIsModalOpenGroup, selectedRoomId } =
+  const { isModalOpenGroup, setIsModalOpenGroup, selectedRoomId,setRenderContent,RenderContent } =
     useContext(AppContext);
   const [allUsers, setAllUsers] = useState([]);
   const [chatRoom, setChatRoom] = useState();
-
+  const [roomName, setRoomName] = useState("");
+  const [render, setRender] = useState(false);
   useEffect(() => {
     fetchUsers();
     fetchChatRoom();
-  }, [selectedRoomId]);
+  }, [selectedRoomId,render]);
 
   const handleOk = () => {
     setIsModalOpenGroup(false);
@@ -71,26 +72,15 @@ function InfoGroup() {
       let result = window.confirm('Are you sure you want to delete?');
       if(result){
         deleteUser(user);
+        
+        setRender(!render);
+        setRenderContent(!RenderContent);
       }
       else{
         return;
       }
       
     }
-    // alert(            
-    //     "Confirm delete",
-    //    `Are you sure you want to delete ${user.name} from the group`, 
-    //   [
-    //     {
-    //       title: "Delete",
-    //       onclick: () => deleteUser(user),
-    //       style: "destructive",
-    //     },
-    //     {
-    //       text: "Cancel",
-    //     },
-    //   ]
-    // );
   };
   const deleteUser = async (user) => {
     const chatRoomUsersToDelete = await (
@@ -107,15 +97,99 @@ function InfoGroup() {
       setAllUsers(allUsers.filter((u) => u.id !== user.id));
     }
   };
-  // console.log(chatRoom);
-const Xoa= ()=>{
-  const modal= Modal.info();
-  modal.update({
-    title:'A',  
+  const confirmChangeAdmin = async (user) => {
+    // check if Auth user is admin of this group
+    const authData = await Auth.currentAuthenticatedUser();
+    if (chatRoom?.Admin?.id !== authData.attributes.sub) {
+      alert("You are not the admin of this group");
+      return;
+    }
+
+    else if (user.id === chatRoom?.Admin?.id) {
+      alert("You are the admin");
+      return;
+    }
+    else{
+      let result = window.confirm('Are you sure you want to change admin ?');
+      if(result){
+        changeAdmin(user);
+      }
+      else{
+        return;
+      }
+    }
     
-  })
-}
+    setRender(!render);
+  };
+  const changeAdmin = async (user) => {
+    const changeAdmin = await DataStore.save(
+      ChatRoom.copyOf(chatRoom, (updatedAdmin) => {
+        updatedAdmin.Admin.id = user.id;
+      })
+    );
+    console.log("Change admin");
+    console.log(changeAdmin);
+    setRenderContent(!RenderContent);
+  };
+
+  const changRoomName = async () => {
+    // check if Auth user is admin of this group
+    const authData = await Auth.currentAuthenticatedUser();
+    if (chatRoom?.Admin?.id !== authData.attributes.sub) {
+      alert("You are not the admin of this group");
+      return;
+    }
+    var ten=prompt("Change Room Name:");
+    if(ten===""){
+      console.log(ten);
+    }
+    else{
+        // setRoomName(ten);
+      console.log("changeRoomName1");
+      DataStore.save(
+        ChatRoom.copyOf(chatRoom, (updatedName) => {
+          updatedName.name = ten;  
+        })
+      );
+      console.log("changeRoomName: ",ten);
+       setRenderContent(!RenderContent);
+      // RenDer();
+      setRender(!render);
+    
+    }  
+  };
+  // function RenDer(){
+  //     const subscription = DataStore.observe(ChatRoom).subscribe((msg) => {
+  //       console.log(msg.model, msg.opType, msg.element);
+  //       if (msg.model === ChatRoom && msg.opType === "UPDATE"){
+  //         //apend new message to existing messages
+  //         console.log("asd");
+  //         console.log(RenderContent);
+  //         setRenderContent(!RenderContent);
+  //       }
+  //     });
+  //     return () => subscription.unsubscribe(); 
+  // }
+  const deleteRoom = async () => {
+    const authData = await Auth.currentAuthenticatedUser();
+    if (chatRoom?.Admin?.id !== authData.attributes.sub) {
+      alert("You are not the admin of this group");
+      return;
+    }
+    console.log("deleteRoom1");
+    const toDelete = await DataStore.query(ChatRoom, chatRoom.id);
+    await DataStore.save(
+      ChatRoom.copyOf(toDelete, (updatedChatRoom) => {
+        updatedChatRoom.name = "Deleted";
+      })
+    );
+    console.log("deleteRoom");
+    setRender(!render);
+    setRenderContent(!RenderContent);
+  };
+
   return (
+
     <div className="container">
       <Modal
         title={chatRoom?.name}
@@ -125,6 +199,7 @@ const Xoa= ()=>{
         footer={null}
         centered
       >
+           
         <div className={cx("warap")}>
           <div className={cx("contentG scrollG")}>
             {allUsers.map((item) => { 
@@ -145,10 +220,13 @@ const Xoa= ()=>{
                     </h1>
                   
                   </div>
-                  <div>
-                    {/* <UserSwitchOutlined
-                      style={{ fontSize: 28, marginLeft: 20, marginRight: 10 }}
-                    /> */}
+                  <div className="admin"> 
+                    <UserSwitchOutlined
+                      style={{ fontSize: 28 }}
+                      onClick={()=>{
+                        confirmChangeAdmin(item)
+                      }}
+                    />
                   
                       <UserDeleteOutlined style={{ fontSize: 28 }} onClick={()=>{confirmDelete(item)}}  />
                  
@@ -159,10 +237,11 @@ const Xoa= ()=>{
             })}
           </div>
           <div className={cx("button")}>
-            <Button type="primary" onClick={Xoa}>Change Group Name</Button>
+            <Button type="primary" onClick={() => changRoomName()}>Change Group Name</Button>
             <Button
               type="primary"
               style={{ marginLeft: 20, backgroundColor: "red" }}
+              onClick={() => deleteRoom()}
             >
               Delete Group
             </Button>
@@ -172,11 +251,4 @@ const Xoa= ()=>{
     </div>
   );
 }
-
-// const GroupHeader = (chatRoom) => {
-//   return (
-
-//   )
-// }
-
 export default InfoGroup;

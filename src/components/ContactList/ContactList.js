@@ -26,11 +26,16 @@ export default function ContactList(props) {
     setIsModalOpen(true);
   };
   useEffect(() => {
+  
     const fetchUserList = async () => {
+      
       const GetUser = await DataStore.query(User);
       // console.log(GetUser);
+      // await DataStore.start();
       setConversations(GetUser);
+      // DataStore.clear();
     };
+    
     fetchUserList();
   }, []);
   //Add User to ChatRoom

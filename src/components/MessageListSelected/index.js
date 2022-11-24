@@ -14,7 +14,7 @@ import { DataStore, SortDirection, Auth } from "aws-amplify";
 import { InfoCircleTwoTone } from "@ant-design/icons";
 import InfoGroup from "../Modals/InfoGroup";
 import EmojiPicker from "emoji-picker-react";
-
+import ScrollableFeed from "react-scrollable-feed";
 const MY_USER_ID = "apple";
 
 function MessageListSelected() {
@@ -23,9 +23,9 @@ function MessageListSelected() {
   const [allUsers, setAllUsers] = useState([]);
   const [user, setUser] = useState(null);
   const [render, setRender] = useState(false);
-  const { selectedRoomId, setIsModalOpenGroup , isEmojiPickerOpen } = useContext(AppContext);
+  const { selectedRoomId, setIsModalOpenGroup , isEmojiPickerOpen,RenderContent } = useContext(AppContext);
   const [messageEmoji, setMessageEmoji] = useState("");
-  const bottomRef = useRef(null);
+  const  scrollRef = useRef();
 
   const fetchUsers = async () => {
     const fetchedUsers = (await DataStore.query(ChatRoomUser))
@@ -43,7 +43,7 @@ function MessageListSelected() {
   useEffect(() => {
     fetchChatRoom();
     fetchUsers();
-  }, [selectedRoomId]);
+  }, [selectedRoomId,RenderContent]);
 
   useEffect(() => {
     fetchMessages();
@@ -65,7 +65,7 @@ function MessageListSelected() {
   useEffect(() => {
     const subscription = DataStore.observe(MessageModel).subscribe((msg) => {
       console.log(msg.model, msg.opType, msg.element);
-      if (msg.model === MessageModel && msg.opType === "INSERT") {
+      if (msg.model === MessageModel && msg.opType === "INSERT"){
         //apend new message to existing messages
         setMessages((existingMessages) => [msg.element, ...existingMessages]);
       }
@@ -73,13 +73,13 @@ function MessageListSelected() {
     return () => subscription.unsubscribe();
   }, []);
 
-  useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  // useEffect(() => {
+   
+  // }, [messages]);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, []);
+    scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   const fetchChatRoom = async () => {
     if (!selectedRoomId) {
@@ -144,10 +144,18 @@ function MessageListSelected() {
           <ToolbarButton key="phone" icon="ion-ios-call" />,
         ]}
       />
-      <div className="message-list-container" ref={bottomRef}>
+        <div className="chatbox" >
+      <div className="message-list-container" >
+
+      
         {messages.map((messItem) => (
-          <Message key={messItem.id} data={messItem}></Message>
+           <div key={messItem.id} ref={scrollRef}>
+
+             <Message  data={messItem}></Message>
+           </div>
         ))}
+          </div>
+      
       </div>
 
       <Compose
@@ -163,7 +171,8 @@ function MessageListSelected() {
         rightItems={[<ToolbarButton key="photo" icon="ion-ios-send" />]}
       ></Compose>
       { isEmojiPickerOpen && (
-         <div style={{marginBottom: 120}}>
+         <div style={{bottom:60,position:'sticky'
+         }}>
                   <EmojiPicker 
      autoFocusSearch={false}
      width="30%"

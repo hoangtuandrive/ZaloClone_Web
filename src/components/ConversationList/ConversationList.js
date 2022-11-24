@@ -34,12 +34,12 @@ export default function ConversationList(props) {
     setChatRooms(chatRooms);
     // console.log(chatRooms);
   };
+  const { setSelectedRoomId ,RenderContent} = React.useContext(AppContext);
   useEffect(() => {
     setChatRooms(chatRooms);
     fetchChatRooms();
     // console.log(chatRooms);
-  }, []);
-  const { setSelectedRoomId } = React.useContext(AppContext);
+  }, [RenderContent]);
   // const GetRommId=()=>{
   //   console.log(chatRooms);
   // }

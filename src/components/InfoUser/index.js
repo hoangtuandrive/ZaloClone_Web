@@ -49,7 +49,7 @@ export default function InfoUsers() {
       setSelectedRoomId(null);
       await Auth.signOut();
       navigate("/", { replace: true });
-      DataStore.clear();
+      // DataStore.clear();
       setIsModalOpen(false);
      
     } catch (error) {
