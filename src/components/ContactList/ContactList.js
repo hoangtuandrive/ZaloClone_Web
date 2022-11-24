@@ -26,16 +26,11 @@ export default function ContactList(props) {
     setIsModalOpen(true);
   };
   useEffect(() => {
-  
     const fetchUserList = async () => {
-      
       const GetUser = await DataStore.query(User);
       // console.log(GetUser);
-      // await DataStore.start();
       setConversations(GetUser);
-      // DataStore.clear();
     };
-    
     fetchUserList();
   }, []);
   //Add User to ChatRoom
@@ -128,7 +123,7 @@ export default function ContactList(props) {
         onClick={() => setIsNewGroup(!isNewGroup)}
       >
         <UsergroupAddOutlined name="group" size={50} color="#4f4f4f" />
-        New Gruop
+        New Group
       </Button>
       {conversations.map((conversation) => (
         <ContactListItem
