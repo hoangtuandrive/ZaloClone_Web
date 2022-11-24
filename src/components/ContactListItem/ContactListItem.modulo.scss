@@ -1,10 +1,12 @@
 .conversation-list-item {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   padding: 10px;
 }
-
+.conversation-list-item-a{
+  justify-content: space-between;
+}
 .conversation-list-item:hover {
   background: #eeeef1;
   cursor: pointer;

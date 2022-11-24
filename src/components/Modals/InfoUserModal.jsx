@@ -53,7 +53,7 @@ function InfoUserModal() {
       var sub = currentUser.attributes.sub;
       var imageUri = currentUser.attributes.imageUri;
       setUser({ name, email, sub, imageUri });
-      console.log(currentUser);
+      
     };
     fetchUser();
   }, []);

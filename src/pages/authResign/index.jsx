@@ -18,19 +18,24 @@ Amplify.configure(awsconfig);
 function AuthResign() {
   // const route = useRoute();
   //Lấy UserName từ Context;
-  const { userContext } = React.useContext(AppContext);
+  const { userContext,PasswordContext } = React.useContext(AppContext);
 
   const navigate = useNavigate();
   const { control, handleSubmit, watch } = useForm({
-    defaultValues: { username: userContext },
+    defaultValues: { username: userContext,   password:PasswordContext },
   });
 
   const onConfirmPressed = async (data) => {
     try {
       await Auth.confirmSignUp(data.username, data.code);
-      navigate("/login", { replace: true });
-
       console.log("Thanh cong");
+    } catch (error) {
+      console.log("error confirming sign up", error);
+    }
+    try {
+      const response = await Auth.signIn(data.username, PasswordContext );
+      console.log("Login log", response);
+     navigate("/chat", { replace: true });
     } catch (error) {
       console.log("error confirming sign up", error);
     }
