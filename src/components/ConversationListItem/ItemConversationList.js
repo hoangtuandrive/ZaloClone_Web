@@ -6,8 +6,10 @@ import { Spin } from 'antd';
 // import moment from "moment";
 import { AppContext } from '../../context/AppProvider';
 import { AmplifyS3Image }  from '@aws-amplify/ui-react/legacy';
+import { useNavigate } from "react-router-dom";
 export default function ConversationListItem(props) {
- 
+  const navigate = useNavigate();
+  console.log("tt", props.data);
   const [user, setUser] = useState(null);
   const [lastMessage, setLastMessage] = useState();
   useEffect(() => {
@@ -38,6 +40,7 @@ export default function ConversationListItem(props) {
   DataStore.query(Message, props.data.chatRoomLastMessageId).then(
     setLastMessage
   );
+;
 }, []);
 
  //Loading
@@ -53,20 +56,48 @@ export default function ConversationListItem(props) {
   // const time = moment(lastMessage?.createdAt).from(moment());
 
     // const { imageUri, name, text } = props.data;
-   
+ const onClick = () => {
+  const setNewMessageToZero = async () => {
+    DataStore.save(
+      ChatRoom.copyOf(props.data, (updatedChatRoom) => {
+        updatedChatRoom.newMessages = 0;
+      })
+    );
+  };
+  setNewMessageToZero();
+  navigate("/chat");
+ }
+
 
 
     return (
-      <div className="conversation-list-item" >
+      <div className="conversation-list-item" onClick={onClick}>
+        {/* {console.log("alo",chatRoom)} */}
+        <div className="new-message">
         <div className="conversation-photo">
           <AmplifyS3Image  imgKey={props.data.imageUri || user?.imageUri} alt="placeholder" 
            style={{"--height": "50px", "--width": "50px"}}
           />
-    
+
+
+
           </div>
+         
+          {!!props.data.newMessages && (  <div className="badge-container">
+
+          <p className="badge-text">N</p>
+        </div>
+
+          )}
+      
+        </div>
+      
         
+
         <div className="conversation-info">
           <h1 className="conversation-title">{props.data.name || user?.name  }</h1>
+
+
           <p className="conversation-snippet">{lastMessage?.content}</p>
           {/* {console.log(user)} */}
         </div>
