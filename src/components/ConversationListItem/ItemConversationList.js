@@ -9,9 +9,10 @@ import { AmplifyS3Image }  from '@aws-amplify/ui-react/legacy';
 import { useNavigate } from "react-router-dom";
 export default function ConversationListItem(props) {
   const navigate = useNavigate();
-  console.log("tt", props.data);
+  
   const [user, setUser] = useState(null);
   const [lastMessage, setLastMessage] = useState();
+  const { RenderContent} = React.useContext(AppContext);
   useEffect(() => {
     const fetchUsers = async () => {
       const fetchedChatRoomUsers = (await DataStore.query(ChatRoomUser))
@@ -30,7 +31,7 @@ export default function ConversationListItem(props) {
       );
     };
     fetchUsers();
-  }, []);
+  }, [RenderContent]);
 
  //get last message from that chatroom, query by id
  useEffect(() => {
