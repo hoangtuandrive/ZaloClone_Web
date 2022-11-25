@@ -14,7 +14,6 @@ import { DataStore, SortDirection, Auth } from "aws-amplify";
 import { InfoCircleTwoTone } from "@ant-design/icons";
 import InfoGroup from "../Modals/InfoGroup";
 import EmojiPicker from "emoji-picker-react";
-import ScrollableFeed from "react-scrollable-feed";
 const MY_USER_ID = "apple";
 
 function MessageListSelected() {
