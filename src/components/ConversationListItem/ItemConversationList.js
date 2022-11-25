@@ -1,13 +1,12 @@
-import React, {useEffect,useState} from 'react';
-import './ConversationListItem.css';
-import { ChatRoom,User,ChatRoomUser,Message } from '../../models';
+import React, { useEffect, useState } from "react";
+import "./ConversationListItem.css";
+import { ChatRoom, User, ChatRoomUser, Message } from "../../models";
 import { Auth, DataStore } from "aws-amplify";
-import { Spin } from 'antd';
+import { Spin } from "antd";
 // import moment from "moment";
-import { AppContext } from '../../context/AppProvider';
-import { AmplifyS3Image }  from '@aws-amplify/ui-react/legacy';
+import { AppContext } from "../../context/AppProvider";
+import { AmplifyS3Image } from "@aws-amplify/ui-react/legacy";
 export default function ConversationListItem(props) {
- 
   const [user, setUser] = useState(null);
   const [lastMessage, setLastMessage] = useState();
   useEffect(() => {
@@ -15,7 +14,7 @@ export default function ConversationListItem(props) {
       const fetchedChatRoomUsers = (await DataStore.query(ChatRoomUser))
         .filter((chatRoomUser) => chatRoomUser.chatRoom.id === props.data.id)
         .map((chatRoomUser) => chatRoomUser.user);
-      console.log(fetchedChatRoomUsers);
+      // console.log(fetchedChatRoomUsers);
 
       // setUsers(fetchedChatRoomUsers);
 
@@ -30,46 +29,45 @@ export default function ConversationListItem(props) {
     fetchUsers();
   }, []);
 
- //get last message from that chatroom, query by id
- useEffect(() => {
-  if (!props.data.chatRoomLastMessageId) {
-    return;
-  }
-  DataStore.query(Message, props.data.chatRoomLastMessageId).then(
-    setLastMessage
-  );
-}, []);
+  //get last message from that chatroom, query by id
+  useEffect(() => {
+    if (!props.data.chatRoomLastMessageId) {
+      return;
+    }
+    DataStore.query(Message, props.data.chatRoomLastMessageId).then(
+      setLastMessage
+    );
+  }, []);
 
- //Loading
- if (!user) {
-  return (
-    <Spin
-      style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-    />
-  );
-}
+  //Loading
+  if (!user) {
+    return (
+      <Spin
+        style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+      />
+    );
+  }
 
   //get time
   // const time = moment(lastMessage?.createdAt).from(moment());
 
-    // const { imageUri, name, text } = props.data;
-   
+  // const { imageUri, name, text } = props.data;
 
-
-    return (
-      <div className="conversation-list-item" >
-        <div className="conversation-photo">
-          <AmplifyS3Image  imgKey={props.data.imageUri || user?.imageUri} alt="placeholder" 
-           style={{"--height": "50px", "--width": "50px"}}
-          />
-    
-          </div>
-        
-        <div className="conversation-info">
-          <h1 className="conversation-title">{props.data.name || user?.name  }</h1>
-          <p className="conversation-snippet">{lastMessage?.content}</p>
-          {/* {console.log(user)} */}
-        </div>
+  return (
+    <div className="conversation-list-item">
+      <div className="conversation-photo">
+        <AmplifyS3Image
+          imgKey={props.data.imageUri || user?.imageUri}
+          alt="placeholder"
+          style={{ "--height": "50px", "--width": "50px" }}
+        />
       </div>
-    );
+
+      <div className="conversation-info">
+        <h1 className="conversation-title">{props.data.name || user?.name}</h1>
+        <p className="conversation-snippet">{lastMessage?.content}</p>
+        {/* {console.log(user)} */}
+      </div>
+    </div>
+  );
 }

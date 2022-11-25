@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useRef } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Compose from "../Compose";
 import Toolbar from "../Toolbar";
 import ToolbarButton from "../ToolbarButton";
@@ -12,7 +12,7 @@ import { Alert } from "antd";
 import { ChatRoom, Message as MessageModel, ChatRoomUser } from "../../models";
 import { DataStore, SortDirection, Auth } from "aws-amplify";
 import { InfoCircleTwoTone } from "@ant-design/icons";
-import InfoGroup from "../Modals/InfoGroup";
+import EmojiPicker from "emoji-picker-react";
 
 const MY_USER_ID = "apple";
 
@@ -21,9 +21,9 @@ function MessageListSelected() {
   const [chatRoom, setChatRoom] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
   const [user, setUser] = useState(null);
-  const [render, setRender] = useState(false);
-  const { selectedRoomId, setIsModalOpenGroup } = useContext(AppContext);
-  const bottomRef = useRef(null);
+  const [messageEmoji, setMessageEmoji] = useState("");
+  const { selectedRoomId, isEmojiPickerOpen, setIsModalOpenGroup } =
+    useContext(AppContext);
 
   const fetchUsers = async () => {
     const fetchedUsers = (await DataStore.query(ChatRoomUser))
@@ -71,14 +71,6 @@ function MessageListSelected() {
     return () => subscription.unsubscribe();
   }, []);
 
-  useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
-
-  useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, []);
-
   const fetchChatRoom = async () => {
     if (!selectedRoomId) {
       console.warn("No chatroom id received");
@@ -108,20 +100,20 @@ function MessageListSelected() {
     console.log(fetchedMessages);
     setMessages(fetchedMessages);
   };
-  console.log(selectedRoomId);
-  // console.log(messages);
-  // console.log(chatRoom);
 
+  console.log(messages);
+  console.log(chatRoom);
+
+  const pickEmoji = (emojiData: EmojiClickData, event: MouseEvent) => {
+    setMessageEmoji((currentMessage) => currentMessage + emojiData.emoji);
+  };
+
+  console.log("pickemoji", messageEmoji);
   return (
     <div className="message-list">
       <Toolbar
-        title={chatRoom?.name || user?.name}
+        title={user?.name}
         rightItems={[
-          // <ToolbarButton
-          //   key="info"
-          //   icon="ion-ios-information-circle-outline"
-
-          // />,
           <InfoCircleTwoTone
             key="info"
             onClick={() => {
@@ -139,10 +131,11 @@ function MessageListSelected() {
           <ToolbarButton key="phone" icon="ion-ios-call" />,
         ]}
       />
-      <div className="message-list-container" ref={bottomRef}>
+      <div className="message-list-container">
+        {" "}
         {messages.map((messItem) => (
           <Message key={messItem.id} data={messItem}></Message>
-        ))}
+        ))}{" "}
       </div>
 
       <Compose
@@ -154,8 +147,17 @@ function MessageListSelected() {
           <ToolbarButton key="emoji" icon="ion-ios-happy" />,
         ]}
         rightItems={[<ToolbarButton key="photo" icon="ion-ios-send" />]}
+        messageEmoji={messageEmoji}
       ></Compose>
-      <InfoGroup />
+      {isEmojiPickerOpen && (
+        <div style={{ marginBottom: 120 }}>
+          <EmojiPicker
+            autoFocusSearch={false}
+            width="30%"
+            onEmojiClick={pickEmoji}
+          />
+        </div>
+      )}
     </div>
   );
 }

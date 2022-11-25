@@ -123,7 +123,7 @@ export default function ContactList(props) {
         onClick={() => setIsNewGroup(!isNewGroup)}
       >
         <UsergroupAddOutlined name="group" size={50} color="#4f4f4f" />
-        New Gruop
+        New Group
       </Button>
       {conversations.map((conversation) => (
         <ContactListItem
