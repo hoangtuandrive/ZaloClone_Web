@@ -9,7 +9,7 @@ import { AmplifyS3Image } from "@aws-amplify/ui-react/legacy";
 import ReactAudioPlayer from "react-audio-player";
 import { AudioPlayer } from "../AudioPlayer/AudioPlayer";
 
-import {FileWordOutlined ,DownloadOutlined } from '@ant-design/icons';
+import { FileWordOutlined, DownloadOutlined } from "@ant-design/icons";
 
 const cx = classNames.bind(styles);
 
@@ -23,15 +23,13 @@ export default function Message(props) {
   async function ObjectsFromS3() {
     let downloadLink = await generateDownloadLinks(props.data.file);
     setlinkdownload(downloadLink);
-    
-
   }
 
   async function generateDownloadLinks(fileKey) {
     const result = await Storage.get(fileKey, { download: true });
     return downloadBlob(result.Body, "filename");
   }
- 
+
   async function downloadBlob(blob, filename) {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -39,18 +37,16 @@ export default function Message(props) {
     return a;
   }
   useEffect(() => {
-    if(props.data.file===null || props.data.file===undefined){
-      console.log("123");  
-    }
-    else{
+    if (props.data.file === null || props.data.file === undefined) {
+      console.log("123");
+    } else {
       console.log(props.data.file);
-      console.log("456");  
+      console.log("456");
       ObjectsFromS3();
     }
   }, []);
   useEffect(() => {
     DataStore.query(User, props.data.userID).then(setUser);
-   
   }, []);
 
   useEffect(() => {
@@ -89,7 +85,7 @@ export default function Message(props) {
           className={cx("messText")}
           style={{
             color: isMe ? "white" : "black",
-            backgroundColor: isMe ? "rgb(55 74 216)" : "lightgray",
+            backgroundColor: isMe ? "#0091ff" : "lightgray",
           }}
         >
           {props.data.image && (
@@ -109,17 +105,16 @@ export default function Message(props) {
           )}
 
           {soundURI && <AudioPlayer soundURI={soundURI} />}
-          {props.data.file &&(
-              <div style={{ marginBottom: props.data.content ? 10 : 0 }}>
-                   <a href={linkdownload}  download="">
-                    <div className="word">
-                      <FileWordOutlined style={{fontSize:50}}/>
-                      <h4>{props.data.file}</h4>
-                      <DownloadOutlined style={{fontSize:30,marginTop:20}}/>
-                    </div>
-      
-                  </a>
-              </div>
+          {props.data.file && (
+            <div style={{ marginBottom: props.data.content ? 10 : 0 }}>
+              <a href={linkdownload} download="">
+                <div className="word">
+                  <FileWordOutlined style={{ fontSize: 50 }} />
+                  <h4>{props.data.file}</h4>
+                  <DownloadOutlined style={{ fontSize: 30, marginTop: 20 }} />
+                </div>
+              </a>
+            </div>
           )}
           {props.data.content}
         </div>

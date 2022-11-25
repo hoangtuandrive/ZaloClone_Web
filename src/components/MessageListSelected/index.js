@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import Compose from "../Compose";
 import Toolbar from "../Toolbar";
 import ToolbarButton from "../ToolbarButton";
@@ -11,7 +11,11 @@ import { AppContext } from "../../context/AppProvider";
 import { Alert } from "antd";
 import { ChatRoom, Message as MessageModel, ChatRoomUser } from "../../models";
 import { DataStore, SortDirection, Auth } from "aws-amplify";
-import { InfoCircleTwoTone } from "@ant-design/icons";
+import {
+  InfoCircleTwoTone,
+  PhoneOutlined,
+  PhoneTwoTone,
+} from "@ant-design/icons";
 import InfoGroup from "../Modals/InfoGroup";
 import EmojiPicker from "emoji-picker-react";
 const MY_USER_ID = "apple";
@@ -120,6 +124,11 @@ function MessageListSelected() {
   const pickEmoji = (emojiData: EmojiClickData, event: MouseEvent) => {
     setMessageEmoji((currentMessage) => currentMessage + emojiData.emoji);
   };
+
+  const OpenVideoCall = async () => {
+    window.open("http://twitter.com/saigowthamr");
+  };
+
   return (
     <div className="message-list">
       <Toolbar
@@ -131,15 +140,26 @@ function MessageListSelected() {
               setIsModalOpenGroup(true);
             }}
             style={{
-              fontSize: 24,
+              fontSize: 32,
               alignItems: "center",
-
               display: "flex",
               marginLeft: 11,
+              marginRight: 30,
             }}
           />,
-          <ToolbarButton key="video" icon="ion-ios-videocam" />,
-          <ToolbarButton key="phone" icon="ion-ios-call" />,
+          <PhoneTwoTone
+            key="info"
+            onClick={() => {
+              OpenVideoCall();
+            }}
+            style={{
+              fontSize: 32,
+              alignItems: "center",
+              display: "flex",
+              marginLeft: 11,
+              marginRight: 30,
+            }}
+          />,
         ]}
       />
       <div className="chatbox">
@@ -162,7 +182,7 @@ function MessageListSelected() {
           <ToolbarButton key="emoji" icon="ion-ios-happy" />,
         ]}
         rightItems={[<ToolbarButton key="photo" icon="ion-ios-send" />]}
-        messageEmoji={messageEmoji}
+        // messageEmoji={messageEmoji}
       ></Compose>
       {isEmojiPickerOpen && (
         <div style={{ bottom: 60, position: "sticky" }}>
