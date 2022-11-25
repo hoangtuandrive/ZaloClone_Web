@@ -12,6 +12,7 @@ import { Alert } from "antd";
 import { ChatRoom, Message as MessageModel, ChatRoomUser } from "../../models";
 import { DataStore, SortDirection, Auth } from "aws-amplify";
 import { InfoCircleTwoTone } from "@ant-design/icons";
+import InfoGroup from "../Modals/InfoGroup";
 import EmojiPicker from "emoji-picker-react";
 
 const MY_USER_ID = "apple";
@@ -21,9 +22,11 @@ function MessageListSelected() {
   const [chatRoom, setChatRoom] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
   const [user, setUser] = useState(null);
-  const [messageEmoji, setMessageEmoji] = useState("");
-  const { selectedRoomId, isEmojiPickerOpen, setIsModalOpenGroup } =
+  const [render, setRender] = useState(false);
+  const { selectedRoomId, setIsModalOpenGroup, isEmojiPickerOpen } =
     useContext(AppContext);
+  const [messageEmoji, setMessageEmoji] = useState("");
+  const bottomRef = useRef(null);
 
   const fetchUsers = async () => {
     const fetchedUsers = (await DataStore.query(ChatRoomUser))
@@ -100,15 +103,12 @@ function MessageListSelected() {
     console.log(fetchedMessages);
     setMessages(fetchedMessages);
   };
-
-  console.log(messages);
-  console.log(chatRoom);
-
+  console.log(selectedRoomId);
+  // console.log(messages);
+  // console.log(chatRoom);
   const pickEmoji = (emojiData: EmojiClickData, event: MouseEvent) => {
     setMessageEmoji((currentMessage) => currentMessage + emojiData.emoji);
   };
-
-  console.log("pickemoji", messageEmoji);
   return (
     <div className="message-list">
       <Toolbar
@@ -140,6 +140,7 @@ function MessageListSelected() {
 
       <Compose
         chatRoom={chatRoom}
+        messageEmoji={messageEmoji}
         leftItems={[
           <ToolbarButton key="photo" icon="ion-ios-camera" />,
           <ToolbarButton key="image" icon="ion-ios-image" />,
@@ -158,6 +159,7 @@ function MessageListSelected() {
           />
         </div>
       )}
+      <InfoGroup />
     </div>
   );
 }

@@ -19,7 +19,14 @@
     border-radius: 10px;
   
 }
-
+.contentG{
+  height: 400px;
+}
+.scrollG{
+  position: relative;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+}
 
 .group-conversation-list-item {
   display: flex;

@@ -13,7 +13,6 @@ function CustomInput({ control,
         rules={rules}
         render={({ field: { onChange, onBlur, value},
         fieldState: { error },
-        
         }) => (
           <>
           <div
