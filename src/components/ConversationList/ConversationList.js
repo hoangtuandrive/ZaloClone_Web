@@ -13,7 +13,7 @@ import { set } from "lodash";
 import { getGrid2UtilityClass } from "@mui/material";
 
 export default function ConversationList(props) {
-  const { setIsModalOpen } = React.useContext(AppContext);
+  const { setIsModalOpen,setSelectedRoomId ,RenderContent } = React.useContext(AppContext);
   //const [users, setUsers] = useState([]);
   const handleInfouser = () => {
     setIsModalOpen(true);
@@ -34,12 +34,14 @@ export default function ConversationList(props) {
     setChatRooms(chatRooms);
     // console.log(chatRooms);
   };
-  const { setSelectedRoomId ,RenderContent} = React.useContext(AppContext);
+
   useEffect(() => {
     setChatRooms(chatRooms);
     fetchChatRooms();
     // console.log(chatRooms);
   }, [RenderContent]);
+
+
   // const GetRommId=()=>{
   //   console.log(chatRooms);
   // }

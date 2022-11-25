@@ -13,17 +13,29 @@ import { Content } from "antd/lib/layout/layout";
 
 const cx = classNames.bind(styles);
 function InfoGroup() {
-  const { isModalOpenGroup, setIsModalOpenGroup, selectedRoomId,setRenderContent,RenderContent } =
-    useContext(AppContext);
+  const { isModalOpenGroup, setIsModalOpenGroup, selectedRoomId,setRenderContent,RenderContent } =useContext(AppContext);
   const [allUsers, setAllUsers] = useState([]);
   const [chatRoom, setChatRoom] = useState();
   const [roomName, setRoomName] = useState("");
   const [render, setRender] = useState(false);
+
   useEffect(() => {
     fetchUsers();
     fetchChatRoom();
   }, [selectedRoomId,render]);
 
+  useEffect(() => {
+    const subscription = DataStore.observe(ChatRoom).subscribe((msg) => {
+      console.log("1test:",msg.model);
+      console.log("2test2",msg.opType);
+      console.log("3test",msg.element);
+      if (msg.model === ChatRoom && msg.opType === "UPDATE"){
+        setRenderContent(!RenderContent);
+        console.log("Chay");     
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, []);
   const handleOk = () => {
     setIsModalOpenGroup(false);
   };
@@ -71,8 +83,7 @@ function InfoGroup() {
       
       let result = window.confirm('Are you sure you want to delete?');
       if(result){
-        deleteUser(user);
-        
+        deleteUser(user);     
         setRender(!render);
         setRenderContent(!RenderContent);
       }
@@ -80,6 +91,39 @@ function InfoGroup() {
         return;
       }
       
+    }
+  };
+  const outGroup = async () => {
+    const authData = await Auth.currentAuthenticatedUser();    
+  
+    // check if Auth user is admin of this group
+      let result = window.confirm('Are you sure you want out group?');
+      if(result){
+        Userout(authData.attributes.sub);     
+        setRender(!render);
+        setIsModalOpenGroup(false);
+        setRenderContent(!RenderContent);
+       
+      }
+      else{
+        return;
+      }
+      
+    
+  };
+  const Userout = async (user) => {
+    const chatRoomUsersToDelete = await (
+      await DataStore.query(ChatRoomUser)
+    ).filter(
+      (cru) => cru.chatRoom.id === chatRoom?.id && cru.user.id === user
+    );
+
+    console.log(chatRoomUsersToDelete);
+
+    if (chatRoomUsersToDelete.length > 0) {
+      await DataStore.delete(chatRoomUsersToDelete[0]);
+
+      setAllUsers(allUsers.filter((u) => u.id !== user));
     }
   };
   const deleteUser = async (user) => {
@@ -110,6 +154,7 @@ function InfoGroup() {
       return;
     }
     else{
+     
       let result = window.confirm('Are you sure you want to change admin ?');
       if(result){
         changeAdmin(user);
@@ -139,6 +184,7 @@ function InfoGroup() {
       alert("You are not the admin of this group");
       return;
     }
+
     var ten=prompt("Change Room Name:");
     if(ten===""){
       console.log(ten);
@@ -146,30 +192,20 @@ function InfoGroup() {
     else{
         // setRoomName(ten);
       console.log("changeRoomName1");
-      DataStore.save(
+      console.log("aa: ",ten);
+     DataStore.save(
         ChatRoom.copyOf(chatRoom, (updatedName) => {
           updatedName.name = ten;  
         })
       );
+  
       console.log("changeRoomName: ",ten);
-       setRenderContent(!RenderContent);
-      // RenDer();
-      setRender(!render);
-    
+      //setRenderContent(!RenderContent);
+      setRender(!render);  
     }  
   };
-  // function RenDer(){
-  //     const subscription = DataStore.observe(ChatRoom).subscribe((msg) => {
-  //       console.log(msg.model, msg.opType, msg.element);
-  //       if (msg.model === ChatRoom && msg.opType === "UPDATE"){
-  //         //apend new message to existing messages
-  //         console.log("asd");
-  //         console.log(RenderContent);
-  //         setRenderContent(!RenderContent);
-  //       }
-  //     });
-  //     return () => subscription.unsubscribe(); 
-  // }
+ 
+  
   const deleteRoom = async () => {
     const authData = await Auth.currentAuthenticatedUser();
     if (chatRoom?.Admin?.id !== authData.attributes.sub) {
@@ -203,9 +239,10 @@ function InfoGroup() {
         <div className={cx("warap")}>
           <div className={cx("contentG scrollG")}>
             {allUsers.map((item) => { 
+                
               const isAdmin = chatRoom?.Admin?.id === item.id;
               return (
-                <div className={cx("group-conversation-list-item")}>
+                <div className={cx("group-conversation-list-item")} key={item.id}>
                   <div className={cx("conversation-photo")}>
                     <AmplifyS3Image
                       imgKey={item.imageUri || item?.imageUri}
@@ -244,6 +281,13 @@ function InfoGroup() {
               onClick={() => deleteRoom()}
             >
               Delete Group
+            </Button>
+            <Button
+              type="primary"
+              style={{ marginLeft: 100, backgroundColor: "red" ,marginTop:20 }}
+              onClick={() => outGroup()}
+            >
+             Out Group
             </Button>
           </div>
         </div>
