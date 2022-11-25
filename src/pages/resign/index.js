@@ -25,9 +25,9 @@ function Resign() {
   const { control, handleSubmit, watch, value, onChange } = useForm();
 
   const pwd = watch("password");
-
+  const passwordContextT=pwd;
   const userContextT = watch("username");
-  const { setuserContext, setPasswordContext } = useContext(AppContext);
+  const { setuserContext,setPassWordContext } = useContext(AppContext);
   const [email, setEmail] = useState("");
   const [emailErr, setEmailErr] = useState(false);
 
@@ -65,9 +65,7 @@ function Resign() {
         attributes: { email, name, preferred_username: username },
       });
       setuserContext(userContextT);
-      setPasswordContext(pwd);
-      
-      console.log("test 17-11-2022", pwd);
+      setPassWordContext(passwordContextT);
       navigate("/authResign", { replace: true });
 
       console.log("Thanh cong");

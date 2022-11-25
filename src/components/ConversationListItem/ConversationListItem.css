@@ -30,6 +30,31 @@
   color: #888;
   margin: 0;
 }
+.badge-text {
+  font-size: 12px;
+  color: white;
+  text-align: center;
+}
+
+.badge-container {
+  background-color: #FA3E3E;
+  width: 20px;
+  height: 20px;
+  border-radius: 15px;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 30px;
+  top: 34px;
+  border-width: 1px;
+  border-color: black;
+  bottom: 1px;
+}
+
+.new-message {
+  width: 55px;
+  position: relative;
+}
 
 /* amplify-s3-image {
   --height: 50px;

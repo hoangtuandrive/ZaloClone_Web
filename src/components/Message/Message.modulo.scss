@@ -56,3 +56,9 @@
     width: 500px;
     height: 200px;
   }
+  .word{
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+  }
