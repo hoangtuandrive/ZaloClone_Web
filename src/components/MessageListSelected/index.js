@@ -126,7 +126,11 @@ function MessageListSelected() {
   };
 
   const OpenVideoCall = async () => {
-    window.open("http://twitter.com/saigowthamr");
+    window.open(
+      "https://webrtc-video-room.herokuapp.com/r/64371264",
+      "_blank",
+      "noopener,noreferrer"
+    );
   };
 
   return (
