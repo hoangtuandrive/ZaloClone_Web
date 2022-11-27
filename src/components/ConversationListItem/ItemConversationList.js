@@ -53,7 +53,7 @@ export default function ConversationListItem(props) {
   }
 
   // get time
-  const time = moment(lastMessage?.createdAt).format("dddd, MMMM Do, h:mm a");
+  const time = moment(lastMessage?.createdAt).format("dddd, MMM D, h:mm a");
 
   // const { imageUri, name, text } = props.data;
   const onClick = () => {
@@ -90,9 +90,14 @@ export default function ConversationListItem(props) {
       <div className="conversation-info">
         <h1 className="conversation-title">{props.data.name || user?.name}</h1>
 
-        <p className="conversation-snippet">
+        {lastMessage?.content && (
+          <p className="conversation-snippet">
+            Last message: {lastMessage?.content}
+          </p>
+        )}
+        {/* <p className="conversation-snippet">
           Last message: {lastMessage?.content}
-        </p>
+        </p> */}
         {lastMessage?.content && (
           <h5 className="conversation-snippet">{time}</h5>
         )}
