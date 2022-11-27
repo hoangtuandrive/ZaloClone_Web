@@ -2,14 +2,19 @@ import React, { useState, useEffect } from "react";
 import styles from "./Message.modulo.scss";
 import classNames from "classnames/bind";
 import { User } from "../../models";
-import { Spin } from "antd";
+import { Spin, Button } from "antd";
 import { DataStore, Auth, Storage, button } from "aws-amplify";
 import { AmplifyS3Image } from "@aws-amplify/ui-react/legacy";
+import moment from "moment";
 
 import ReactAudioPlayer from "react-audio-player";
 import { AudioPlayer } from "../AudioPlayer/AudioPlayer";
 
-import { FileWordOutlined, DownloadOutlined } from "@ant-design/icons";
+import {
+  FileWordOutlined,
+  DownloadOutlined,
+  PhoneOutlined,
+} from "@ant-design/icons";
 
 const cx = classNames.bind(styles);
 
@@ -18,6 +23,7 @@ export default function Message(props) {
   const [isMe, setIsMe] = useState(false);
   const [soundURI, setSoundURI] = useState(null);
   const [linkdownload, setlinkdownload] = useState(null);
+  const [videoCall, setVideoCall] = useState(null);
   console.log(props.data);
 
   async function ObjectsFromS3() {
@@ -65,6 +71,23 @@ export default function Message(props) {
       Storage.get(props.data.audio).then(setSoundURI);
     }
   }, [props.data]);
+
+  useEffect(() => {
+    if (props.data.content === "Video Call") {
+      setVideoCall(true);
+    }
+  }, []);
+
+  const OpenVideoCall = async () => {
+    window.open(
+      "https://webrtc-video-room.herokuapp.com/r/64371264",
+      "_blank",
+      "noopener,noreferrer"
+    );
+  };
+
+  // get time
+  const time = moment(props.data.createdAt).format("MMM D, h:mm a");
 
   // console.log(soundURI);
 
@@ -116,7 +139,22 @@ export default function Message(props) {
               </a>
             </div>
           )}
-          {props.data.content}
+          {videoCall && (
+            <div onClick={OpenVideoCall}>
+              <h>Video call in progress: </h>
+              <Button
+                type="primary"
+                shape="round"
+                icon={<PhoneOutlined />}
+                size={"large"}
+                style={{ background: "green" }}
+              >
+                Join
+              </Button>
+            </div>
+          )}
+          {!videoCall && props.data.content}
+          <p class="time">{time}</p>
         </div>
       </div>
     </div>

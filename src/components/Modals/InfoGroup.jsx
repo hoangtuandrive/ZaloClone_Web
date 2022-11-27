@@ -1,5 +1,5 @@
-import React, { useContext, useEffect ,useState } from "react";
-import { Modal,Alert } from "antd";
+import React, { useContext, useEffect, useState } from "react";
+import { Modal, Alert } from "antd";
 import { AppContext } from "../../context/AppProvider";
 import styles from "./GroupInfo.modulo.scss";
 import { Auth, DataStore } from "aws-amplify";
@@ -7,35 +7,70 @@ import classNames from "classnames/bind";
 import { ChatRoom, User, ChatRoomUser } from "../../../src/models";
 import { AmplifyS3Image } from "@aws-amplify/ui-react/legacy";
 
-import { Button,Popconfirm } from "antd";
+import { Button, Popconfirm } from "antd";
 import { UserDeleteOutlined, UserSwitchOutlined } from "@ant-design/icons";
 import { Content } from "antd/lib/layout/layout";
 
 const cx = classNames.bind(styles);
 function InfoGroup() {
-  const { isModalOpenGroup, setIsModalOpenGroup, selectedRoomId,setRenderContent,RenderContent } =useContext(AppContext);
+  const {
+    isModalOpenGroup,
+    setIsModalOpenGroup,
+    selectedRoomId,
+    setRenderContent,
+    RenderContent,
+  } = useContext(AppContext);
   const [allUsers, setAllUsers] = useState([]);
   const [chatRoom, setChatRoom] = useState();
   const [roomName, setRoomName] = useState("");
   const [render, setRender] = useState(false);
+  const [userdelete, setuserdelete] = useState();
+  const [currentUser, setCurrentUser] = useState();
 
   useEffect(() => {
     fetchUsers();
     fetchChatRoom();
-  }, [selectedRoomId,render]);
+    getCurrentUser();
+  }, [selectedRoomId, render, userdelete]);
+
+  const getCurrentUser = async () => {
+    const authData = await Auth.currentAuthenticatedUser();
+    setCurrentUser(authData.attributes.sub);
+  };
 
   useEffect(() => {
     const subscription = DataStore.observe(ChatRoom).subscribe((msg) => {
-      console.log("1test:",msg.model);
-      console.log("2test2",msg.opType);
-      console.log("3test",msg.element);
-      if (msg.model === ChatRoom && msg.opType === "UPDATE"){
+      console.log("1test:", msg.model);
+      console.log("2test2", msg.opType);
+      console.log("3test", msg.element);
+      if (msg.model === ChatRoom && msg.opType === "UPDATE") {
         setRenderContent(!RenderContent);
-        console.log("Chay");     
+        console.log("Chay");
       }
     });
     return () => subscription.unsubscribe();
   }, []);
+
+  useEffect(() => {
+    getCurrentUser();
+    const subscription = DataStore.observe(ChatRoomUser).subscribe((msg) => {
+      console.log("1test:", msg.model);
+      console.log("2test2", msg.opType);
+      console.log("3test", msg.element);
+      if (msg.model === ChatRoomUser && msg.opType === "DELETE") {
+        console.log(currentUser);
+        console.log("1");
+        if (currentUser === msg.element.user.id) {
+          console.log("2");
+          alert("Bạn đã bị xóa khỏi nhóm ", chatRoom?.name);
+        }
+        setuserdelete(msg.element.user.id);
+        setRenderContent(!RenderContent);
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
   const handleOk = () => {
     setIsModalOpenGroup(false);
   };
@@ -65,58 +100,46 @@ function InfoGroup() {
     }
     console.log(chatRoom);
   };
- 
+
   const confirmDelete = async (user) => {
-  
     // check if Auth user is admin of this group
     const authData = await Auth.currentAuthenticatedUser();
     if (chatRoom?.Admin?.id !== authData.attributes.sub) {
       alert("You are not the admin of this group");
-       return;
-    }
-    else if (user.id === chatRoom?.Admin?.id) {
+      return;
+    } else if (user.id === chatRoom?.Admin?.id) {
       alert("You are the admin, you cannot delete yourself");
       console.log(chatRoom.Admin.id);
-       return;
-    } 
-    else{
-      
-      let result = window.confirm('Are you sure you want to delete?');
-      if(result){
-        deleteUser(user);     
+      return;
+    } else {
+      let result = window.confirm("Are you sure you want to delete?");
+      if (result) {
+        deleteUser(user);
         setRender(!render);
         setRenderContent(!RenderContent);
-      }
-      else{
+      } else {
         return;
       }
-      
     }
   };
   const outGroup = async () => {
-    const authData = await Auth.currentAuthenticatedUser();    
-  
+    const authData = await Auth.currentAuthenticatedUser();
+
     // check if Auth user is admin of this group
-      let result = window.confirm('Are you sure you want out group?');
-      if(result){
-        Userout(authData.attributes.sub);     
-        setRender(!render);
-        setIsModalOpenGroup(false);
-        setRenderContent(!RenderContent);
-       
-      }
-      else{
-        return;
-      }
-      
-    
+    let result = window.confirm("Are you sure you want out group?");
+    if (result) {
+      Userout(authData.attributes.sub);
+      setRender(!render);
+      setIsModalOpenGroup(false);
+      setRenderContent(!RenderContent);
+    } else {
+      return;
+    }
   };
   const Userout = async (user) => {
     const chatRoomUsersToDelete = await (
       await DataStore.query(ChatRoomUser)
-    ).filter(
-      (cru) => cru.chatRoom.id === chatRoom?.id && cru.user.id === user
-    );
+    ).filter((cru) => cru.chatRoom.id === chatRoom?.id && cru.user.id === user);
 
     console.log(chatRoomUsersToDelete);
 
@@ -147,23 +170,18 @@ function InfoGroup() {
     if (chatRoom?.Admin?.id !== authData.attributes.sub) {
       alert("You are not the admin of this group");
       return;
-    }
-
-    else if (user.id === chatRoom?.Admin?.id) {
+    } else if (user.id === chatRoom?.Admin?.id) {
       alert("You are the admin");
       return;
-    }
-    else{
-     
-      let result = window.confirm('Are you sure you want to change admin ?');
-      if(result){
+    } else {
+      let result = window.confirm("Are you sure you want to change admin ?");
+      if (result) {
         changeAdmin(user);
-      }
-      else{
+      } else {
         return;
       }
     }
-    
+
     setRender(!render);
   };
   const changeAdmin = async (user) => {
@@ -185,27 +203,25 @@ function InfoGroup() {
       return;
     }
 
-    var ten=prompt("Change Room Name:");
-    if(ten===""){
+    var ten = prompt("Change Room Name:");
+    if (ten === "") {
       console.log(ten);
-    }
-    else{
-        // setRoomName(ten);
+    } else {
+      // setRoomName(ten);
       console.log("changeRoomName1");
-      console.log("aa: ",ten);
-     DataStore.save(
+      console.log("aa: ", ten);
+      DataStore.save(
         ChatRoom.copyOf(chatRoom, (updatedName) => {
-          updatedName.name = ten;  
+          updatedName.name = ten;
         })
       );
-  
-      console.log("changeRoomName: ",ten);
+
+      console.log("changeRoomName: ", ten);
       //setRenderContent(!RenderContent);
-      setRender(!render);  
-    }  
+      setRender(!render);
+    }
   };
- 
-  
+
   const deleteRoom = async () => {
     const authData = await Auth.currentAuthenticatedUser();
     if (chatRoom?.Admin?.id !== authData.attributes.sub) {
@@ -225,7 +241,6 @@ function InfoGroup() {
   };
 
   return (
-
     <div className="container">
       <Modal
         title={chatRoom?.name}
@@ -235,14 +250,15 @@ function InfoGroup() {
         footer={null}
         centered
       >
-           
         <div className={cx("warap")}>
           <div className={cx("contentG scrollG")}>
-            {allUsers.map((item) => { 
-                
+            {allUsers.map((item) => {
               const isAdmin = chatRoom?.Admin?.id === item.id;
               return (
-                <div className={cx("group-conversation-list-item")} key={item.id}>
+                <div
+                  className={cx("group-conversation-list-item")}
+                  key={item.id}
+                >
                   <div className={cx("conversation-photo")}>
                     <AmplifyS3Image
                       imgKey={item.imageUri || item?.imageUri}
@@ -255,26 +271,30 @@ function InfoGroup() {
                       {item.name}
                       {isAdmin && <span> (Admin)</span>}
                     </h1>
-                  
                   </div>
-                  <div className="admin"> 
+                  <div className="admin">
                     <UserSwitchOutlined
                       style={{ fontSize: 28 }}
-                      onClick={()=>{
-                        confirmChangeAdmin(item)
+                      onClick={() => {
+                        confirmChangeAdmin(item);
                       }}
                     />
-                  
-                      <UserDeleteOutlined style={{ fontSize: 28 }} onClick={()=>{confirmDelete(item)}}  />
-                 
-                   
+
+                    <UserDeleteOutlined
+                      style={{ fontSize: 28 }}
+                      onClick={() => {
+                        confirmDelete(item);
+                      }}
+                    />
                   </div>
                 </div>
               );
             })}
           </div>
           <div className={cx("button")}>
-            <Button type="primary" onClick={() => changRoomName()}>Change Group Name</Button>
+            <Button type="primary" onClick={() => changRoomName()}>
+              Change Group Name
+            </Button>
             <Button
               type="primary"
               style={{ marginLeft: 20, backgroundColor: "red" }}
@@ -284,10 +304,10 @@ function InfoGroup() {
             </Button>
             <Button
               type="primary"
-              style={{ marginLeft: 100, backgroundColor: "red" ,marginTop:20 }}
+              style={{ marginLeft: 100, backgroundColor: "red", marginTop: 20 }}
               onClick={() => outGroup()}
             >
-             Out Group
+              Out Group
             </Button>
           </div>
         </div>

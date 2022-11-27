@@ -3,16 +3,16 @@ import "./ConversationListItem.css";
 import { ChatRoom, User, ChatRoomUser, Message } from "../../models";
 import { Auth, DataStore } from "aws-amplify";
 import { Spin } from "antd";
-// import moment from "moment";
+import moment from "moment";
 import { AppContext } from "../../context/AppProvider";
 import { AmplifyS3Image } from "@aws-amplify/ui-react/legacy";
 import { useNavigate } from "react-router-dom";
 export default function ConversationListItem(props) {
   const navigate = useNavigate();
-  
+
   const [user, setUser] = useState(null);
   const [lastMessage, setLastMessage] = useState();
-  const { RenderContent} = React.useContext(AppContext);
+  const { RenderContent } = React.useContext(AppContext);
   useEffect(() => {
     const fetchUsers = async () => {
       const fetchedChatRoomUsers = (await DataStore.query(ChatRoomUser))
@@ -52,8 +52,8 @@ export default function ConversationListItem(props) {
     );
   }
 
-  //get time
-  // const time = moment(lastMessage?.createdAt).from(moment());
+  // get time
+  const time = moment(lastMessage?.createdAt).format("dddd, MMMM Do, h:mm a");
 
   // const { imageUri, name, text } = props.data;
   const onClick = () => {
@@ -90,7 +90,12 @@ export default function ConversationListItem(props) {
       <div className="conversation-info">
         <h1 className="conversation-title">{props.data.name || user?.name}</h1>
 
-        <p className="conversation-snippet">{lastMessage?.content}</p>
+        <p className="conversation-snippet">
+          Last message: {lastMessage?.content}
+        </p>
+        {lastMessage?.content && (
+          <h5 className="conversation-snippet">{time}</h5>
+        )}
         {/* {console.log(user)} */}
       </div>
     </div>

@@ -18,6 +18,7 @@ import {
 } from "@ant-design/icons";
 import InfoGroup from "../Modals/InfoGroup";
 import EmojiPicker from "emoji-picker-react";
+import { AmplifyS3Image } from "@aws-amplify/ui-react/legacy";
 const MY_USER_ID = "apple";
 
 function MessageListSelected() {
@@ -126,6 +127,14 @@ function MessageListSelected() {
   };
 
   const OpenVideoCall = async () => {
+    const user = await Auth.currentAuthenticatedUser();
+    await DataStore.save(
+      new MessageModel({
+        content: "Video Call",
+        userID: user.attributes.sub,
+        chatroomID: selectedRoomId,
+      })
+    );
     window.open(
       "https://webrtc-video-room.herokuapp.com/r/64371264",
       "_blank",
@@ -136,7 +145,7 @@ function MessageListSelected() {
   return (
     <div className="message-list">
       <Toolbar
-        title={user?.name}
+        // title={chatRoom?.name || user?.name}
         rightItems={[
           <InfoCircleTwoTone
             key="info"
@@ -165,11 +174,19 @@ function MessageListSelected() {
             }}
           />,
         ]}
+        leftItems={[
+          <AmplifyS3Image
+            imgKey={user?.imageUri || null}
+            style={{ "--height": "50px", "--width": "50px" }}
+          />,
+          <h1 className="toolbar-title">{chatRoom?.name || user?.name}</h1>,
+        ]}
       />
       <div className="chatbox">
         <div className="message-list-container">
           {messages.map((messItem) => (
             <div key={messItem.id} ref={scrollRef}>
+              {/* {moment(messItem.createdAt).format("dddd, MMMM Do, h:mm:ss a")} */}
               <Message data={messItem}></Message>
             </div>
           ))}

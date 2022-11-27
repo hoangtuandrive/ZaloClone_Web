@@ -1,5 +1,5 @@
 import { Button, IconButton } from "@mui/material";
-import React, { useEffect ,useState} from "react";
+import React, { useEffect, useState } from "react";
 import {
   WechatOutlined,
   CloudOutlined,
@@ -10,7 +10,7 @@ import {
 } from "@ant-design/icons";
 import "./InfoUser.css";
 import { AppContext } from "../../context/AppProvider";
-import { AmplifyS3Image }  from '@aws-amplify/ui-react/legacy';
+import { AmplifyS3Image } from "@aws-amplify/ui-react/legacy";
 import { useNavigate } from "react-router-dom";
 import { Auth, DataStore } from "aws-amplify";
 import InfoUserModal from "../Modals/InfoUserModal";
@@ -19,7 +19,7 @@ import { User } from "../../models";
 export default function InfoUsers() {
   const navigate = useNavigate();
   const [currentUser, setCurrentUsers] = useState();
-  const { setIsModalOpen,setSelectedRoomId } = React.useContext(AppContext);
+  const { setIsModalOpen, setSelectedRoomId } = React.useContext(AppContext);
   const handleInfouser = () => {
     setIsModalOpen(true);
   };
@@ -38,10 +38,9 @@ export default function InfoUsers() {
     );
     setCurrentUsers(dbUser);
   };
- 
+
   useEffect(() => {
-    // DataStore.start();
-  fetchUser();
+    fetchUser();
   }, []);
 
   async function signOut() {
@@ -51,7 +50,6 @@ export default function InfoUsers() {
       navigate("/", { replace: true });
       DataStore.clear();
       setIsModalOpen(false);
-     
     } catch (error) {
       console.log("error signing out: ", error);
     }
@@ -59,17 +57,16 @@ export default function InfoUsers() {
 
   return (
     <div className="infouser-item">
-       <Button className="btn-photo">
+      <Button className="btn-photo">
         {currentUser?.imageUri && (
-              <div className="infouser-photo">
-              <AmplifyS3Image
-            
-            imgKey={currentUser?.imageUri}
-            style={{"--height": "50px", "--width": "50px"}}
-            // imgKey={"63020dda-908f-4f60-9217-0a693fc367cf.png"}
-            // alt="placeholder"
-              />
-        </div> 
+          <div className="infouser-photo">
+            <AmplifyS3Image
+              imgKey={currentUser?.imageUri}
+              style={{ "--height": "50px", "--width": "50px" }}
+              // imgKey={"63020dda-908f-4f60-9217-0a693fc367cf.png"}
+              // alt="placeholder"
+            />
+          </div>
         )}
         {/* <div className="infouser-photo">
               <AmplifyS3Image
@@ -84,8 +81,7 @@ export default function InfoUsers() {
           src={currentUser?.imageUri}
           alt="placeholder"
         /> */}
-       </Button>
-    
+      </Button>
 
       <div className="icon-top">
         <Button onClick={handelChat}>
@@ -112,7 +108,7 @@ export default function InfoUsers() {
           <LogoutOutlined style={{ fontSize: "30px", color: "white" }} />
         </Button>
       </div>
-      <InfoUserModal/>
+      <InfoUserModal />
     </div>
   );
 }
