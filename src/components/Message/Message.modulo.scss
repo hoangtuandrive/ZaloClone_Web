@@ -62,9 +62,8 @@
     align-items: center;
     display: flex;
   }
-  .time{
+  .last-row{
     margin-top: 10px;
     font-size: 10px;
-    justify-content: flex-end;
-    align-items: flex-end;
+    flex-direction: row;
   }

@@ -14,6 +14,7 @@ import {
   FileWordOutlined,
   DownloadOutlined,
   PhoneOutlined,
+  CheckOutlined,
 } from "@ant-design/icons";
 
 const cx = classNames.bind(styles);
@@ -159,7 +160,10 @@ export default function Message(props) {
             </div>
           )}
           {!videoCall && props.data.content}
-          <p class="time">{time}</p>
+          <div class="last-row">
+            {time}
+            <CheckOutlined style={{ marginLeft: 10 }} />
+          </div>
         </div>
       </div>
     </div>
