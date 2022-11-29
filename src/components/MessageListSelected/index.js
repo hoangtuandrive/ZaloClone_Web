@@ -52,10 +52,12 @@ function MessageListSelected() {
   useEffect(() => {
     fetchChatRoom();
     fetchUsers();
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [selectedRoomId, RenderContent]);
 
   useEffect(() => {
     fetchMessages();
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chatRoom]);
 
   useEffect(() => {

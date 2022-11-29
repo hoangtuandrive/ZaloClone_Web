@@ -87,7 +87,7 @@ export default function Message(props) {
   };
 
   // get time
-  const time = moment(props.data.createdAt).format("MMM D, h:mm a");
+  const time = moment(props.data.createdAt).format("dddd, MMM D, h:mm a");
 
   // console.log(soundURI);
 
@@ -131,9 +131,14 @@ export default function Message(props) {
           {props.data.file && (
             <div style={{ marginBottom: props.data.content ? 10 : 0 }}>
               <a href={linkdownload} download="">
-                <div className="word">
+                <div
+                  className="word"
+                  style={{ color: isMe ? "white" : "black" }}
+                >
                   <FileWordOutlined style={{ fontSize: 50 }} />
-                  <h4>{props.data.file}</h4>
+                  <h4 style={{ color: isMe ? "white" : "black" }}>
+                    {props.data.file}
+                  </h4>
                   <DownloadOutlined style={{ fontSize: 30, marginTop: 20 }} />
                 </div>
               </a>

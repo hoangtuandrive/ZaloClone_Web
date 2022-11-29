@@ -53,7 +53,8 @@ export default function ConversationListItem(props) {
   }
 
   // get time
-  const time = moment(lastMessage?.createdAt).format("dddd, MMM D, h:mm a");
+  // const time = moment(lastMessage?.createdAt).format("dddd, MMM D, h:mm a");
+  const time = moment(lastMessage?.createdAt).from(moment());
 
   // const { imageUri, name, text } = props.data;
   const onClick = () => {
