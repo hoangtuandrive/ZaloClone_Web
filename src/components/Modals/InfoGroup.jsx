@@ -18,24 +18,46 @@ function InfoGroup() {
   const [chatRoom, setChatRoom] = useState();
   const [roomName, setRoomName] = useState("");
   const [render, setRender] = useState(false);
-
+  const [admin,setadmin]=useState();
+  const [userdelete,setuserdelete]=useState();
+  const [currentUser,setcurrentUser]=useState();
   useEffect(() => {
     fetchUsers();
     fetchChatRoom();
-  }, [selectedRoomId,render]);
+    GetCurentUsers();
+  }, [selectedRoomId,render,admin,userdelete]);
 
+  const GetCurentUsers= async ()=>{
+    const authData = await Auth.currentAuthenticatedUser();  
+    setcurrentUser(authData.attributes.sub);
+  }
+  // console.log("curent: ",currentUser);
   useEffect(() => {
     const subscription = DataStore.observe(ChatRoom).subscribe((msg) => {
-      console.log("1test:",msg.model);
-      console.log("2test2",msg.opType);
-      console.log("3test",msg.element);
+      console.log("curent: ",currentUser);
       if (msg.model === ChatRoom && msg.opType === "UPDATE"){
         setRenderContent(!RenderContent);
+        setadmin(msg.element.Admin);
         console.log("Chay");     
       }
     });
     return () => subscription.unsubscribe();
   }, []);
+  useEffect(() => {
+    const subscription = DataStore.observe(ChatRoomUser).subscribe((msg) => {
+      console.log("1test:",msg.model);
+      console.log("2test2",msg.opType);
+      console.log("3test",msg.element);
+      if (msg.model === ChatRoomUser && msg.opType === "DELETE"){
+
+        setuserdelete(msg.element.user.id);
+        setRenderContent(!RenderContent);
+    
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
   const handleOk = () => {
     setIsModalOpenGroup(false);
   };
@@ -70,6 +92,7 @@ function InfoGroup() {
   
     // check if Auth user is admin of this group
     const authData = await Auth.currentAuthenticatedUser();
+    
     if (chatRoom?.Admin?.id !== authData.attributes.sub) {
       alert("You are not the admin of this group");
        return;
@@ -85,7 +108,7 @@ function InfoGroup() {
       if(result){
         deleteUser(user);     
         setRender(!render);
-        setRenderContent(!RenderContent);
+        // setRenderContent(!RenderContent);
       }
       else{
         return;
@@ -101,8 +124,8 @@ function InfoGroup() {
       if(result){
         Userout(authData.attributes.sub);     
         setRender(!render);
-        setIsModalOpenGroup(false);
-        setRenderContent(!RenderContent);
+        // setIsModalOpenGroup(false);
+        // setRenderContent(!RenderContent);
        
       }
       else{
@@ -144,6 +167,7 @@ function InfoGroup() {
   const confirmChangeAdmin = async (user) => {
     // check if Auth user is admin of this group
     const authData = await Auth.currentAuthenticatedUser();
+    
     if (chatRoom?.Admin?.id !== authData.attributes.sub) {
       alert("You are not the admin of this group");
       return;
@@ -174,7 +198,7 @@ function InfoGroup() {
     );
     console.log("Change admin");
     console.log(changeAdmin);
-    setRenderContent(!RenderContent);
+    // setRenderContent(!RenderContent);
   };
 
   const changRoomName = async () => {

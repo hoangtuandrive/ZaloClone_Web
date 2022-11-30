@@ -6,7 +6,17 @@
 }
 .messright{
     margin-right: 8px;
-    
+    justify-content: center;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+}
+.messleft{
+  margin-right: 8px;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+ 
 }
 .message.leftContainer{
     
@@ -62,3 +72,26 @@
     align-items: center;
     display: flex;
   }
+  .messdelete{
+    display: flex;
+    height: 70px;
+    background-color: white;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  .messdelete_wrap{
+    display: flex;
+    flex-direction: row;
+  }
+  .btnOpenDelete{
+    border-radius: 5px;
+    background-color: white;
+    border: yellow;
+  }
+  .btnXoa{
+    border-radius: 5px;
+    background-color: white;
+    margin-bottom: 5px;
+  }
+  

@@ -18,7 +18,8 @@ export default function Message(props) {
   const [isMe, setIsMe] = useState(false);
   const [soundURI, setSoundURI] = useState(null);
   const [linkdownload, setlinkdownload] = useState(null);
-  console.log(props.data);
+  const [check,setcheck]=useState(false);
+  console.log(props);
 
   async function ObjectsFromS3() {
     let downloadLink = await generateDownloadLinks(props.data.file);
@@ -69,14 +70,17 @@ export default function Message(props) {
       Storage.get(props.data.audio).then(setSoundURI);
     }
   }, [props.data]);
-
+  // function handleCheck(e){
+  //   setcheck(e.target.checked);
+  //   console.log(e.target.checked);
+  // }
   // console.log(soundURI);
 
   if (!user) {
     return <Spin></Spin>;
   }
   return (
-    <div className={cx("message", isMe ? "rightContainer" : "leftContainer")}>
+    <div className={cx("message", isMe ? "rightContainer" : "leftContainer")} >
       <div className={cx("messImg")}>
         <AmplifyS3Image
           imgKey={user?.imageUri || null}
@@ -84,7 +88,7 @@ export default function Message(props) {
         />
       </div>
 
-      <div className={cx("messright")}>
+      <div className={cx(isMe ? "messright":"messleft")}>
         <div
           className={cx("messText")}
           style={{
@@ -122,7 +126,22 @@ export default function Message(props) {
               </div>
           )}
           {props.data.content}
+         
         </div>
+        <div    className={cx("messdelete_wrap")}>
+          {/* <label onClick={props.openDelete} htmlFor="messdel" >
+            <input name="messdel" type="checkbox" id="messdel" hidden={true}/>
+            <p>...</p>
+         </label> */}
+         <button onClick={props.openDelete} className={cx("btnOpenDelete")}>...</button>
+           
+        </div>
+        {props.isSelected &&(
+              <div className={cx("messdelete")}>
+                  <button onClick={props.deleteClick} className={cx("btnXoa")}>Delete Message</button>
+                  <button onClick={props.recallClick} className={cx("btnXoa")}>Recall Message</button>
+              </div>
+            )}
       </div>
     </div>
   );
