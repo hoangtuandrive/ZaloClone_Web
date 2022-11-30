@@ -17,11 +17,12 @@ import { useNavigate } from "react-router-dom";
 export default function ContactList(props) {
   const navigate = useNavigate();
   const [conversations, setConversations] = useState([]);
-  const { setIsModalOpen } = React.useContext(AppContext);
+  const { setIsModalOpen,  setRenderContent,RenderContent} = React.useContext(AppContext);
   // const [users, setUsers] = useState([]);
 
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [isNewGroup, setIsNewGroup] = useState(false);
+  // const [Render, setRender] = useState(false);
   const handleInfouser = () => {
     setIsModalOpen(true);
   };
@@ -33,6 +34,21 @@ export default function ContactList(props) {
     };
     fetchUserList();
   }, []);
+
+  // useEffect(() => { 
+  //   const subscription = DataStore.observe(ChatRoomUser).subscribe((msg) => {
+  //     console.log("1test:",msg.model);
+  //     console.log("2test2",msg.opType);
+  //     console.log("3test",msg.element);
+  //     if (msg.model === ChatRoomUser && msg.opType === "INSERT"){
+  //       setRenderContent(!RenderContent);
+  //       console.log("Chay");     
+  //     }
+  //   });
+  //   return () => subscription.unsubscribe();
+  // }, []);
+
+  
   //Add User to ChatRoom
   const addUserToChatRoom = async (user, chatRoom) => {
     DataStore.save(new ChatRoomUser({ user, chatRoom }));
@@ -94,6 +110,7 @@ export default function ContactList(props) {
 
   const saveGroup = async () => {
     await createChatRoom(selectedUsers);
+    // setRender(!Render);
   };
 
   return (

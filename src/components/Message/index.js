@@ -25,7 +25,8 @@ export default function Message(props) {
   const [soundURI, setSoundURI] = useState(null);
   const [linkdownload, setlinkdownload] = useState(null);
   const [videoCall, setVideoCall] = useState(null);
-  console.log(props.data);
+  const [check, setcheck] = useState(false);
+  console.log(props);
 
   async function ObjectsFromS3() {
     let downloadLink = await generateDownloadLinks(props.data.file);
@@ -104,7 +105,7 @@ export default function Message(props) {
         />
       </div>
 
-      <div className={cx("messright")}>
+      <div className={cx(isMe ? "messright" : "messleft")}>
         <div
           className={cx("messText")}
           style={{
@@ -165,6 +166,25 @@ export default function Message(props) {
             <CheckOutlined style={{ marginLeft: 10 }} />
           </div>
         </div>
+        <div className={cx("messdelete_wrap")}>
+          {/* <label onClick={props.openDelete} htmlFor="messdel" >
+            <input name="messdel" type="checkbox" id="messdel" hidden={true}/>
+            <p>...</p>
+         </label> */}
+          <button onClick={props.openDelete} className={cx("btnOpenDelete")}>
+            ...
+          </button>
+        </div>
+        {props.isSelected && (
+          <div className={cx("messdelete")}>
+            <button onClick={props.deleteClick} className={cx("btnXoa")}>
+              Delete Message
+            </button>
+            <button onClick={props.recallClick} className={cx("btnXoa")}>
+              Recall Message
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

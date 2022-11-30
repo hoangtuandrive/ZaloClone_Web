@@ -19,6 +19,8 @@ import {
 import InfoGroup from "../Modals/InfoGroup";
 import EmojiPicker from "emoji-picker-react";
 import { AmplifyS3Image } from "@aws-amplify/ui-react/legacy";
+import { BsXOctagon } from "react-icons/bs";
+
 const MY_USER_ID = "apple";
 
 function MessageListSelected() {
@@ -27,6 +29,10 @@ function MessageListSelected() {
   const [allUsers, setAllUsers] = useState([]);
   const [user, setUser] = useState(null);
   const [render, setRender] = useState(false);
+  const [messDel, setMessDel] = useState();
+  const [messUpdate, setMessUpdate] = useState();
+  const [isDelete, setDelete] = useState(false);
+  const [selectedMess, setselectedMess] = useState([]);
   const {
     selectedRoomId,
     setIsModalOpenGroup,
@@ -57,8 +63,7 @@ function MessageListSelected() {
 
   useEffect(() => {
     fetchMessages();
-    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [chatRoom]);
+  }, [chatRoom, messDel, messUpdate, render]);
 
   useEffect(() => {
     const fetchChatRooms = async () => {
@@ -83,7 +88,28 @@ function MessageListSelected() {
     });
     return () => subscription.unsubscribe();
   }, []);
+  useEffect(() => {
+    const subscription = DataStore.observe(MessageModel).subscribe((msg) => {
+      console.log(msg.model, msg.opType, msg.element);
+      if (msg.model === MessageModel && msg.opType === "DELETE") {
+        //apend new message to existing messages
 
+        setMessDel(msg.element.id);
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    const subscription = DataStore.observe(MessageModel).subscribe((msg) => {
+      console.log(msg.model, msg.opType, msg.element);
+      if (msg.model === MessageModel && msg.opType === "UPDATE") {
+        console.log("vo");
+        setMessUpdate(msg.element.id);
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, []);
   // useEffect(() => {
 
   // }, [messages]);
@@ -121,7 +147,7 @@ function MessageListSelected() {
     console.log(fetchedMessages);
     setMessages(fetchedMessages);
   };
-  console.log(selectedRoomId);
+  // console.log(selectedRoomId);
   // console.log(messages);
   // console.log(chatRoom);
   const pickEmoji = (emojiData: EmojiClickData, event: MouseEvent) => {
@@ -144,6 +170,49 @@ function MessageListSelected() {
     );
   };
 
+  const isMessSelected = (mess) => {
+    return selectedMess.some((selectedMess) => selectedMess.id === mess.id);
+  };
+  const onMessPress = (mess) => {
+    // console.log("asdL ",mess.id);
+    if (isMessSelected(mess)) {
+      // remove it from selected
+      setselectedMess(
+        selectedMess.filter((selectedMess) => selectedMess.id !== mess.id)
+      );
+    } else {
+      setselectedMess([...selectedMess, mess]);
+    }
+  };
+  const deleteMess = async (mess) => {
+    const currentUser = await Auth.currentAuthenticatedUser();
+
+    if (currentUser.attributes.sub === mess.userID) {
+      await DataStore.delete(MessageModel, (messmodel) =>
+        messmodel.id("eq", mess.id)
+      );
+      setRender(!render);
+    } else {
+      alert("You are not a messager so you can't delete");
+    }
+    // console.log("aa:",mess.id);
+  };
+  const recallMess = async (mess) => {
+    const currentUser = await Auth.currentAuthenticatedUser();
+    if (currentUser.attributes.sub === mess.userID) {
+      await DataStore.save(
+        MessageModel.copyOf(mess, (updated) => {
+          updated.content = "Tin nhắn đã đc thu hồi";
+          updated.image = null;
+          updated.file = null;
+          updated.audio = null;
+        })
+      );
+      setRender(!render);
+    } else {
+      alert("You are not a messager so you can't recall");
+    }
+  };
   return (
     <div className="message-list">
       <Toolbar
@@ -188,8 +257,13 @@ function MessageListSelected() {
         <div className="message-list-container">
           {messages.map((messItem) => (
             <div key={messItem.id} ref={scrollRef}>
-              {/* {moment(messItem.createdAt).format("dddd, MMMM Do, h:mm:ss a")} */}
-              <Message data={messItem}></Message>
+              <Message
+                data={messItem}
+                openDelete={() => onMessPress(messItem)}
+                isSelected={isMessSelected(messItem)}
+                deleteClick={() => deleteMess(messItem)}
+                recallClick={() => recallMess(messItem)}
+              ></Message>
             </div>
           ))}
         </div>

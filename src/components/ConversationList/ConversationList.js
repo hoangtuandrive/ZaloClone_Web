@@ -18,7 +18,12 @@ export default function ConversationList(props) {
   const handleInfouser = () => {
     setIsModalOpen(true);
   };
-
+  useEffect(() => {
+    setChatRooms(chatRooms);
+    fetchChatRooms();
+    // console.log(chatRooms);
+  }, [RenderContent]);
+  
   const [chatRooms, setChatRooms] = useState([]);
   const fetchChatRooms = async () => {
     const currentUser = await Auth.currentAuthenticatedUser();
@@ -35,11 +40,7 @@ export default function ConversationList(props) {
     // console.log(chatRooms);
   };
 
-  useEffect(() => {
-    setChatRooms(chatRooms);
-    fetchChatRooms();
-    // console.log(chatRooms);
-  }, [RenderContent]);
+ 
 
 
   // const GetRommId=()=>{
