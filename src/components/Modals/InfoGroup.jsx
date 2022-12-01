@@ -210,7 +210,7 @@ function InfoGroup() {
       );
 
       console.log("changeRoomName: ", ten);
-      //setRenderContent(!RenderContent);
+      setRenderContent(!RenderContent);
       setRender(!render);
     }
   };

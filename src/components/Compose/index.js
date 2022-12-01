@@ -2,18 +2,17 @@ import React, { useEffect, useState, useContext } from "react";
 import "./Compose.css";
 import { Button } from "antd";
 import { ChatRoomUser, Message, ChatRoom } from "../../models";
-import { Auth, DataStore, Storage } from "aws-amplify";
+import { Auth, DataStore,Storage } from "aws-amplify";
 import { AppContext } from "../../context/AppProvider";
 import ToolbarButton from "../ToolbarButton";
 import EmojiPicker, { EmojiStyle } from "emoji-picker-react";
-import { FrownTwoTone, FileAddTwoTone } from "@ant-design/icons";
-
+import { FrownTwoTone,FileAddTwoTone } from "@ant-design/icons";
 import Emoji from "../Emoji/Emoji";
 import { v4 as uuidv4 } from "uuid";
 
 export default function Compose(props) {
   // console.log("Right", props);
-  // console.log("chatroom", { props });
+  console.log("chatroom", { props });
   const [message, setMessage] = useState("");
   const [progress, setProgress] = useState(0);
   useEffect(() => {
@@ -55,89 +54,96 @@ export default function Compose(props) {
   const onPress = () => {
     saveNewMessage();
   };
-
+  
   const progressCallback = (progress) => {
     setProgress(progress.loaded / progress.total);
   };
-  const getBlob = async (uri) => {
-    const link = URL.createObjectURL(uri);
+const getBlob = async (uri) => {
+   
+     const link=URL.createObjectURL(uri);
     const respone = await fetch(link);
     const blob = await respone.blob();
     return blob;
   };
 
-  const sendImage = async () => {
-    if (!image) {
-      return;
-    }
-    const blob = await getBlob(image);
-    const { key } = await Storage.put(`${uuidv4()}.png`, blob, {
-      progressCallback,
-    });
-
-    // send message with image
-    const user = await Auth.currentAuthenticatedUser();
-    const newMessage = await DataStore.save(
-      new Message({
-        content: "Sent Image",
-        image: key,
-        userID: user.attributes.sub,
-        chatroomID: selectedRoomId,
-      })
-    );
-    updateLastMessage(newMessage);
-  };
-  const sendFile = async () => {
-    if (!file) {
-      console.log("123");
-      return;
-    }
-    const blob = await getBlob(file);
-    const { key } = await Storage.put(`${uuidv4()}.docx`, blob, {
-      progressCallback,
-    });
-
-    // send message with image
-    const user = await Auth.currentAuthenticatedUser();
-    const newMessage = await DataStore.save(
-      new Message({
-        content: "Sent File",
-        file: key,
-        userID: user.attributes.sub,
-        chatroomID: selectedRoomId,
-      })
-    );
-    updateLastMessage(newMessage);
-  };
-  function handleFile({ target }) {
-    console.log("file");
-    const loadedfile = target.files[0];
-    // setFile(loadedImage);
-    file = loadedfile;
-    sendFile();
+const sendImage = async () => {
+ 
+  if (!image) {
+    return;
   }
-  function handleImage({ target }) {
-    console.log("anh");
-    const loadedImage = target.files[0];
-    // setImage(loadedImage);
-    image = loadedImage;
-    sendImage();
+  const blob = await getBlob(image);
+  const { key } = await Storage.put(`${uuidv4()}.png`, blob, {
+    progressCallback,
+  });
+
+  // send message with image
+  const user = await Auth.currentAuthenticatedUser();
+  const newMessage = await DataStore.save(
+    new Message({
+      content: "Sent Image",
+      image: key,
+      userID: user.attributes.sub,
+      chatroomID: selectedRoomId,
+    })
+  );
+  updateLastMessage(newMessage);
+    
+};
+const sendFile = async () => {
+
+  if (!file) {
+    console.log("123");
+    return;
   }
+  const blob = await getBlob(file);
+  const { key } = await Storage.put(`${uuidv4()}.docx`, blob, {
+    progressCallback,
+  });
+
+  // send message with image
+  const user = await Auth.currentAuthenticatedUser();
+  const newMessage = await DataStore.save(
+    new Message({
+      content: "Sent File",
+      file: key,
+      userID: user.attributes.sub,
+      chatroomID: selectedRoomId,
+    })
+  );
+  updateLastMessage(newMessage);
+    
+};
+function handleFile({target}){
+  console.log("file");
+  const loadedfile = target.files[0];
+  // setFile(loadedImage);
+  file=loadedfile;
+  sendFile();
+}
+function handleImage({target}){
+  console.log("anh");
+  const loadedImage = target.files[0];
+  // setImage(loadedImage);
+  image=loadedImage;
+  sendImage();
+  
+}
   return (
     <div className="compose">
+      
       {/* <div className="left-button"> {props.leftItems.} </div> */}
       <div className="left-button">
-        <label onChange={handleImage} htmlFor="formIda">
-          <input name="Anh" type="file" id="formIda" hidden={true} />
-          <ToolbarButton key="photo" icon="ion-ios-camera" />
+
+        <label onChange={handleImage}  htmlFor="formIda" >
+         <input name="Anh" type="file" id="formIda" hidden={true} />
+         <ToolbarButton key="photo" icon="ion-ios-camera" />
         </label>
 
         <ToolbarButton key="audio" icon="ion-ios-mic" />
-
-        <label onChange={handleFile} htmlFor="formId">
-          <input name="File" type="file" id="formId" hidden={true} />
-          {/* <ToolbarButton key="image" icon="ion-ios-image" /> */}
-          <FileAddTwoTone
+      
+        <label onChange={handleFile}  htmlFor="formId" >
+         <input name="File" type="file" id="formId" hidden={true} />
+         <FileAddTwoTone
             style={{
               fontSize: 24,
               alignItems: "center",
@@ -156,6 +162,8 @@ export default function Compose(props) {
             marginLeft: 11,
           }}
         />
+
+   
       </div>
       <div className="container">
         <input
@@ -165,15 +173,17 @@ export default function Compose(props) {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           spellCheck="false"
-        />
+        /> 
+     
 
         <div className="right-button" onClick={onPress}>
-          <Button type="primary" className="btnSend">
-            Send
-          </Button>
+          <Button type="primary" className="btnSend" onClick={onPress} >Send</Button>
           {/* {props.rightItems} */}
         </div>
       </div>
     </div>
   );
+
 }
+
+
