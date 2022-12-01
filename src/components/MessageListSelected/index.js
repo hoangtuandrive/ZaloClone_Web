@@ -5,7 +5,7 @@ import ToolbarButton from "../ToolbarButton";
 import Message from "../Message";
 import moment from "moment";
 import chatData from "../../assets/dummy-data/Chats.js";
-
+import { useNavigate } from "react-router-dom";
 import "./MessageList.css";
 import { AppContext } from "../../context/AppProvider";
 import { Alert } from "antd";
@@ -41,7 +41,7 @@ function MessageListSelected() {
   } = useContext(AppContext);
   const [messageEmoji, setMessageEmoji] = useState("");
   const scrollRef = useRef();
-
+  const navigate = useNavigate();
   const fetchUsers = async () => {
     const fetchedUsers = (await DataStore.query(ChatRoomUser))
       .filter((chatRoomUser) => chatRoomUser.chatRoom.id === selectedRoomId)
@@ -163,11 +163,12 @@ function MessageListSelected() {
         chatroomID: selectedRoomId,
       })
     );
-    window.open(
-      "https://webrtc-video-room.herokuapp.com/r/64371264",
-      "_blank",
-      "noopener,noreferrer"
-    );
+    // window.open(
+    //   "https://webrtc-video-room.herokuapp.com/r/64371264",
+    //   "_blank",
+    //   "noopener,noreferrer"
+    // );
+    navigate("/videocall", { replace: true });
   };
 
   const isMessSelected = (mess) => {

@@ -6,6 +6,7 @@ import AuthResign from "../pages/authResign";
 import ForgotPassword from "../pages/forgotpassword/index";
 import ResetPassword from "../pages/forgotpassword/resetpassword";
 import Contact from "../pages/Contact";
+import VideoCall from "../pages/videocall";
 
 const publicRoutes = [
   { path: "/", component: Home },
@@ -16,6 +17,7 @@ const publicRoutes = [
   { path: "/forgotpassword", component: ForgotPassword },
   { path: "/resetpassword", component: ResetPassword },
   { path: "/contact", component: Contact },
+  { path: "/videocall", component: VideoCall },
 ];
 
 const privateRoutes = [];

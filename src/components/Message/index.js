@@ -6,7 +6,7 @@ import { Spin, Button } from "antd";
 import { DataStore, Auth, Storage, button } from "aws-amplify";
 import { AmplifyS3Image } from "@aws-amplify/ui-react/legacy";
 import moment from "moment";
-
+import { useNavigate } from "react-router-dom";
 import ReactAudioPlayer from "react-audio-player";
 import { AudioPlayer } from "../AudioPlayer/AudioPlayer";
 
@@ -27,7 +27,7 @@ export default function Message(props) {
   const [videoCall, setVideoCall] = useState(null);
   const [check, setcheck] = useState(false);
   console.log(props);
-
+  const navigate = useNavigate();
   async function ObjectsFromS3() {
     let downloadLink = await generateDownloadLinks(props.data.file);
     setlinkdownload(downloadLink);
@@ -81,11 +81,12 @@ export default function Message(props) {
   }, []);
 
   const OpenVideoCall = async () => {
-    window.open(
-      "https://webrtc-video-room.herokuapp.com/r/64371264",
-      "_blank",
-      "noopener,noreferrer"
-    );
+    // window.open(
+    //   "https://go.meetingrooms.net/live/cnm/room1?auth=1",
+    //   "_blank",
+    //   "noopener,noreferrer"
+    // );
+    navigate("/videocall", { replace: true });
   };
 
   // get time
