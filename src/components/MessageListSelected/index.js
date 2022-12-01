@@ -203,7 +203,7 @@ function MessageListSelected() {
     if (currentUser.attributes.sub === mess.userID) {
       await DataStore.save(
         MessageModel.copyOf(mess, (updated) => {
-          updated.content = "Tin nhắn đã đc thu hồi";
+          updated.content = "[message recalled]";
           updated.image = null;
           updated.file = null;
           updated.audio = null;
